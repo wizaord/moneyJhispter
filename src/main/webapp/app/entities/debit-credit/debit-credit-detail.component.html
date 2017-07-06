@@ -1,0 +1,51 @@
+
+<div *ngIf="debitCredit">
+    <h2><span jhiTranslate="moneyJhipsterApp.debitCredit.detail.title">Debit Credit</span> {{debitCredit.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="moneyJhipsterApp.debitCredit.libelle">Libelle</span></dt>
+        <dd>
+            <span>{{debitCredit.libelle}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.debitCredit.dateEnregistrement">Date Enregistrement</span></dt>
+        <dd>
+            <span>{{debitCredit.dateEnregistrement | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.debitCredit.isPointe">Is Pointe</span></dt>
+        <dd>
+            <span>{{debitCredit.isPointe}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.debitCredit.datePointage">Date Pointage</span></dt>
+        <dd>
+            <span>{{debitCredit.datePointage | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.debitCredit.montantTotal">Montant Total</span></dt>
+        <dd>
+            <span>{{debitCredit.montantTotal}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.debitCredit.libelleBanque">Libelle Banque</span></dt>
+        <dd>
+            <span>{{debitCredit.libelleBanque}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.debitCredit.compteRattache">Compte Rattache</span></dt>
+        <dd>
+            <div *ngIf="debitCredit.compteRattache">
+                <a [routerLink]="['/compte-bancaire', debitCredit.compteRattache?.id]">{{debitCredit.compteRattache?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'debit-credit/'+ debitCredit.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

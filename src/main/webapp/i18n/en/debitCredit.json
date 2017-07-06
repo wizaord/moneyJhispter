@@ -1,0 +1,28 @@
+{
+    "moneyJhipsterApp": {
+        "debitCredit" : {
+            "home": {
+                "title": "Debit Credits",
+                "createLabel": "Create a new Debit Credit",
+                "createOrEditLabel": "Create or edit a Debit Credit"
+            },
+            "created": "A new Debit Credit is created with identifier {{ param }}",
+            "updated": "A Debit Credit is updated with identifier {{ param }}",
+            "deleted": "A Debit Credit is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Debit Credit {{ id }}?"
+            },
+            "detail": {
+                "title": "Debit Credit"
+            },
+            "libelle": "Libelle",
+            "dateEnregistrement": "Date Enregistrement",
+            "isPointe": "Is Pointe",
+            "datePointage": "Date Pointage",
+            "montantTotal": "Montant Total",
+            "libelleBanque": "Libelle Banque",
+            "details": "Details",
+            "compteRattache": "Compte Rattache"
+        }
+    }
+}

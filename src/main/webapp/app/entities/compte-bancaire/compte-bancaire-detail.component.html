@@ -1,0 +1,53 @@
+
+<div *ngIf="compteBancaire">
+    <h2><span jhiTranslate="moneyJhipsterApp.compteBancaire.detail.title">Compte Bancaire</span> {{compteBancaire.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="moneyJhipsterApp.compteBancaire.libelle">Libelle</span></dt>
+        <dd>
+            <span>{{compteBancaire.libelle}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.compteBancaire.numeroCompte">Numero Compte</span></dt>
+        <dd>
+            <span>{{compteBancaire.numeroCompte}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.compteBancaire.montantSolde">Montant Solde</span></dt>
+        <dd>
+            <span>{{compteBancaire.montantSolde}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.compteBancaire.dateOuverture">Date Ouverture</span></dt>
+        <dd>
+            <span>{{compteBancaire.dateOuverture | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.compteBancaire.dateFermeture">Date Fermeture</span></dt>
+        <dd>
+            <span>{{compteBancaire.dateFermeture | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.compteBancaire.isClos">Is Clos</span></dt>
+        <dd>
+            <span>{{compteBancaire.isClos}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.compteBancaire.isDeleted">Is Deleted</span></dt>
+        <dd>
+            <span>{{compteBancaire.isDeleted}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.compteBancaire.proprietaire">Proprietaire</span></dt>
+        <dd>
+            <span>{{compteBancaire.proprietaire}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'compte-bancaire/'+ compteBancaire.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

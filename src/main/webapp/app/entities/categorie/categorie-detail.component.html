@@ -1,0 +1,37 @@
+
+<div *ngIf="categorie">
+    <h2><span jhiTranslate="moneyJhipsterApp.categorie.detail.title">Categorie</span> {{categorie.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="moneyJhipsterApp.categorie.libelle">Libelle</span></dt>
+        <dd>
+            <span>{{categorie.libelle}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.categorie.isCredit">Is Credit</span></dt>
+        <dd>
+            <span>{{categorie.isCredit}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.categorie.abonnementRegulier">Abonnement Regulier</span></dt>
+        <dd>
+            <span>{{categorie.abonnementRegulier}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.categorie.categoriePere">Categorie Pere</span></dt>
+        <dd>
+            <span>{{categorie.categoriePere}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'categorie/'+ categorie.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

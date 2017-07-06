@@ -1,0 +1,66 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDebitCreditLabel" jhiTranslate="moneyJhipsterApp.debitCredit.home.createOrEditLabel">Create or edit a Debit Credit</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!debitCredit.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="debitCredit.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.debitCredit.libelle" for="field_libelle">Libelle</label>
+            <input type="text" class="form-control" name="libelle" id="field_libelle"
+                [(ngModel)]="debitCredit.libelle"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.debitCredit.dateEnregistrement" for="field_dateEnregistrement">Date Enregistrement</label>
+            <div class="d-flex">
+                <input id="field_dateEnregistrement" type="datetime-local" class="form-control" name="dateEnregistrement" [(ngModel)]="debitCredit.dateEnregistrement"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.debitCredit.isPointe" for="field_isPointe">Is Pointe</label>
+            <input type="checkbox" class="form-control" name="isPointe" id="field_isPointe"
+                [(ngModel)]="debitCredit.isPointe"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.debitCredit.datePointage" for="field_datePointage">Date Pointage</label>
+            <div class="d-flex">
+                <input id="field_datePointage" type="datetime-local" class="form-control" name="datePointage" [(ngModel)]="debitCredit.datePointage"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.debitCredit.montantTotal" for="field_montantTotal">Montant Total</label>
+            <input type="number" class="form-control" name="montantTotal" id="field_montantTotal"
+                [(ngModel)]="debitCredit.montantTotal"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.debitCredit.libelleBanque" for="field_libelleBanque">Libelle Banque</label>
+            <input type="text" class="form-control" name="libelleBanque" id="field_libelleBanque"
+                [(ngModel)]="debitCredit.libelleBanque"  />
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="moneyJhipsterApp.debitCredit.compteRattache" for="field_compteRattache">Compte Rattache</label>
+            <select class="form-control" id="field_compteRattache" name="compteRattache" [(ngModel)]="debitCredit.compteRattache" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="compteBancaireOption.id === debitCredit.compteRattache?.id ? debitCredit.compteRattache : compteBancaireOption" *ngFor="let compteBancaireOption of comptebancaires; trackBy: trackCompteBancaireById">{{compteBancaireOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

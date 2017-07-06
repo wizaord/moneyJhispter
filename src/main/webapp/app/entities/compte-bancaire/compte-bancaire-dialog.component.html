@@ -1,0 +1,69 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCompteBancaireLabel" jhiTranslate="moneyJhipsterApp.compteBancaire.home.createOrEditLabel">Create or edit a Compte Bancaire</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!compteBancaire.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="compteBancaire.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.compteBancaire.libelle" for="field_libelle">Libelle</label>
+            <input type="text" class="form-control" name="libelle" id="field_libelle"
+                [(ngModel)]="compteBancaire.libelle"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.compteBancaire.numeroCompte" for="field_numeroCompte">Numero Compte</label>
+            <input type="text" class="form-control" name="numeroCompte" id="field_numeroCompte"
+                [(ngModel)]="compteBancaire.numeroCompte"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.compteBancaire.montantSolde" for="field_montantSolde">Montant Solde</label>
+            <input type="number" class="form-control" name="montantSolde" id="field_montantSolde"
+                [(ngModel)]="compteBancaire.montantSolde"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.compteBancaire.dateOuverture" for="field_dateOuverture">Date Ouverture</label>
+            <div class="d-flex">
+                <input id="field_dateOuverture" type="datetime-local" class="form-control" name="dateOuverture" [(ngModel)]="compteBancaire.dateOuverture"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.compteBancaire.dateFermeture" for="field_dateFermeture">Date Fermeture</label>
+            <div class="d-flex">
+                <input id="field_dateFermeture" type="datetime-local" class="form-control" name="dateFermeture" [(ngModel)]="compteBancaire.dateFermeture"
+                  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.compteBancaire.isClos" for="field_isClos">Is Clos</label>
+            <input type="checkbox" class="form-control" name="isClos" id="field_isClos"
+                [(ngModel)]="compteBancaire.isClos"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.compteBancaire.isDeleted" for="field_isDeleted">Is Deleted</label>
+            <input type="checkbox" class="form-control" name="isDeleted" id="field_isDeleted"
+                [(ngModel)]="compteBancaire.isDeleted"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="moneyJhipsterApp.compteBancaire.proprietaire" for="field_proprietaire">Proprietaire</label>
+            <input type="number" class="form-control" name="proprietaire" id="field_proprietaire"
+                [(ngModel)]="compteBancaire.proprietaire"  />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

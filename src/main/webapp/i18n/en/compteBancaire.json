@@ -1,0 +1,29 @@
+{
+    "moneyJhipsterApp": {
+        "compteBancaire" : {
+            "home": {
+                "title": "Compte Bancaires",
+                "createLabel": "Create a new Compte Bancaire",
+                "createOrEditLabel": "Create or edit a Compte Bancaire"
+            },
+            "created": "A new Compte Bancaire is created with identifier {{ param }}",
+            "updated": "A Compte Bancaire is updated with identifier {{ param }}",
+            "deleted": "A Compte Bancaire is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Compte Bancaire {{ id }}?"
+            },
+            "detail": {
+                "title": "Compte Bancaire"
+            },
+            "libelle": "Libelle",
+            "numeroCompte": "Numero Compte",
+            "montantSolde": "Montant Solde",
+            "dateOuverture": "Date Ouverture",
+            "dateFermeture": "Date Fermeture",
+            "isClos": "Is Clos",
+            "isDeleted": "Is Deleted",
+            "proprietaire": "Proprietaire",
+            "debitscredits": "Debitscredits"
+        }
+    }
+}

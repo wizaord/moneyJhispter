@@ -1,0 +1,24 @@
+{
+    "moneyJhipsterApp": {
+        "detailMontant" : {
+            "home": {
+                "title": "DetailMontants",
+                "createLabel": "Créer un nouveau Detail Montant",
+                "createOrEditLabel": "Créer ou éditer un Detail Montant"
+            },
+            "created": "Un nouveau Detail Montant a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Detail Montant avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Detail Montant avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Detail Montant {{ id }} ?"
+            },
+            "detail": {
+                "title": "Detail Montant"
+            },
+            "montant": "Montant",
+            "virementInterneCompteId": "Virement Interne Compte Id",
+            "categorie": "Categorie",
+            "debitCreditAssocie": "Debit Credit Associe"
+        }
+    }
+}

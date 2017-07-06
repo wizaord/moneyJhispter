@@ -1,0 +1,41 @@
+
+<div *ngIf="detailMontant">
+    <h2><span jhiTranslate="moneyJhipsterApp.detailMontant.detail.title">Detail Montant</span> {{detailMontant.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="moneyJhipsterApp.detailMontant.montant">Montant</span></dt>
+        <dd>
+            <span>{{detailMontant.montant}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.detailMontant.virementInterneCompteId">Virement Interne Compte Id</span></dt>
+        <dd>
+            <span>{{detailMontant.virementInterneCompteId}}</span>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.detailMontant.categorie">Categorie</span></dt>
+        <dd>
+            <div *ngIf="detailMontant.categorie">
+                <a [routerLink]="['/categorie', detailMontant.categorie?.id]">{{detailMontant.categorie?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="moneyJhipsterApp.detailMontant.debitCreditAssocie">Debit Credit Associe</span></dt>
+        <dd>
+            <div *ngIf="detailMontant.debitCreditAssocie">
+                <a [routerLink]="['/debit-credit', detailMontant.debitCreditAssocie?.id]">{{detailMontant.debitCreditAssocie?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'detail-montant/'+ detailMontant.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

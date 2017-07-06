@@ -1,0 +1,62 @@
+<div>
+    <h2>
+        <span jhiTranslate="moneyJhipsterApp.categorie.home.title">Categories</span>
+        <button class="btn btn-primary float-right create-categorie" [routerLink]="['/', { outlets: { popup: ['categorie-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="moneyJhipsterApp.categorie.home.createLabel">
+            Create new Categorie
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="categories">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="moneyJhipsterApp.categorie.libelle">Libelle</span></th>
+            <th><span jhiTranslate="moneyJhipsterApp.categorie.isCredit">Is Credit</span></th>
+            <th><span jhiTranslate="moneyJhipsterApp.categorie.abonnementRegulier">Abonnement Regulier</span></th>
+            <th><span jhiTranslate="moneyJhipsterApp.categorie.categoriePere">Categorie Pere</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let categorie of categories ;trackBy: trackId">
+                <td><a [routerLink]="['../categorie', categorie.id ]">{{categorie.id}}</a></td>
+                <td>{{categorie.libelle}}</td>
+                <td>{{categorie.isCredit}}</td>
+                <td>{{categorie.abonnementRegulier}}</td>
+                <td>{{categorie.categoriePere}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../categorie', categorie.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'categorie/'+ categorie.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'categorie/'+ categorie.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
