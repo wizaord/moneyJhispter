@@ -7,6 +7,10 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entités",
+                "categorie": "Categorie",
+                "compteBancaire": "Compte Bancaire",
+                "debitCredit": "Debit Credit",
+                "detailMontant": "Detail Montant",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -128,5 +132,5 @@
         "emailexists": "Email déjà utilisé !",
         "idexists": "Une nouvelle entité {{entityName}} ne peut pas avoir d'ID !"
     },
-    "footer": "Money Web 2017"
+    "footer": "Ceci est votre pied de page"
 }

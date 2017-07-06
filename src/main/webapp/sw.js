@@ -1,5 +1,5 @@
-var dataCacheName = '"MoneyJhipster-v1';
-var cacheName = '"MoneyJhipster-1';
+var dataCacheName = 'MoneyJhipster-v1';
+var cacheName = 'MoneyJhipster-1';
 var filesToCache = [
     '/',
     '/index.html'

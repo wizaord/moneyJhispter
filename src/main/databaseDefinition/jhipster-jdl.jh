@@ -1,0 +1,45 @@
+entity Categorie {
+	id Integer,
+    libelle String,
+    isCredit Boolean,
+    abonnementRegulier Boolean,
+    categoriePere Integer
+}
+
+entity CompteBancaire {
+	id Integer,
+    libelle String,
+    numeroCompte String,
+    montantSolde Float,
+    dateOuverture Instant,
+    dateFermeture Instant,
+    isClos Boolean,
+    isDeleted Boolean,
+    proprietaire Integer
+}
+
+entity DebitCredit {
+	id Integer,
+    libelle String,
+    dateEnregistrement Instant,
+    isPointe Boolean,
+    datePointage Instant,
+    montantTotal Float,
+    libelleBanque String
+}
+
+entity DetailMontant {
+	id Integer,
+    montant Double,
+    virementInterneCompteId Integer
+}
+
+relationship OneToMany {
+  DebitCredit{details} to DetailMontant{debitCreditAssocie},
+  CompteBancaire{debitscredits} to DebitCredit{compteRattache}
+}
+
+
+relationship ManyToOne {
+	DetailMontant{categorie} to Categorie
+}

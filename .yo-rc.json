@@ -4,7 +4,7 @@
       "packageName": "com.wizaord.money",
       "nativeLanguage": "fr"
     },
-    "jhipsterVersion": "4.5.6",
+    "jhipsterVersion": "4.6.0",
     "baseName": "moneyJhipster",
     "packageName": "com.wizaord.money",
     "packageFolder": "com/wizaord/money",
@@ -22,7 +22,7 @@
     "buildTool": "maven",
     "enableSocialSignIn": false,
     "rememberMeKey": "022cc2baffed300fb0c79423d6eea860e42d0a7a",
-    "clientFramework": "angular2",
+    "clientFramework": "angularX",
     "useSass": true,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
