@@ -18,7 +18,7 @@ entity CompteBancaire {
     proprietaire Integer
 }
 
-entity DebitCredit {
+entity debitcredit {
 	id Integer,
     libelle String,
     dateEnregistrement Instant,
@@ -28,18 +28,21 @@ entity DebitCredit {
     libelleBanque String
 }
 
-entity DetailMontant {
+entity detailmontant {
 	id Integer,
     montant Double,
     virementInterneCompteId Integer
 }
 
 relationship OneToMany {
-  DebitCredit{details} to DetailMontant{debitCreditAssocie},
-  CompteBancaire{debitscredits} to DebitCredit{compteRattache}
+  debitcredit{details} to detailmontant{debitCreditAssocie},
+  CompteBancaire{debitscredits} to debitcredit{compteRattache}
 }
 
 
 relationship ManyToOne {
-	DetailMontant{categorie} to Categorie
+	detailmontant{categorie} to Categorie
 }
+
+paginate debitcredit with pagination
+paginate detailmontant with pagination

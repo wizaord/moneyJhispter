@@ -11,10 +11,29 @@ import { CompteBancaireDeletePopupComponent } from './compte-bancaire-delete-dia
 
 import { Principal } from '../../shared';
 
+@Injectable()
+export class CompteBancaireResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+      };
+    }
+}
+
 export const compteBancaireRoute: Routes = [
     {
         path: 'compte-bancaire',
         component: CompteBancaireComponent,
+        resolve: {
+            'pagingParams': CompteBancaireResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'moneyJhipsterApp.compteBancaire.home.title'

@@ -5,9 +5,15 @@ import com.wizaord.money.domain.CompteBancaire;
 
 import com.wizaord.money.repository.CompteBancaireRepository;
 import com.wizaord.money.web.rest.util.HeaderUtil;
+import com.wizaord.money.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,13 +85,16 @@ public class CompteBancaireResource {
     /**
      * GET  /compte-bancaires : get all the compteBancaires.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of compteBancaires in body
      */
     @GetMapping("/compte-bancaires")
     @Timed
-    public List<CompteBancaire> getAllCompteBancaires() {
-        log.debug("REST request to get all CompteBancaires");
-        return compteBancaireRepository.findAll();
+    public ResponseEntity<List<CompteBancaire>> getAllCompteBancaires(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of CompteBancaires");
+        Page<CompteBancaire> page = compteBancaireRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/compte-bancaires");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
