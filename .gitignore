@@ -143,3 +143,4 @@ Desktop.ini
 .eslintcache
 /.mvn/
 /.jhipster/
+/src/main/resources/config/application-devWithBdd.yml

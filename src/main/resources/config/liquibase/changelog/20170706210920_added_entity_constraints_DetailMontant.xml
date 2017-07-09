@@ -7,18 +7,18 @@
         Added the constraints for entity DetailMontant.
     -->
     <changeSet id="20170706210920-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="categorie_id"
-                                 baseTableName="detail_montant"
-                                 constraintName="fk_detail_montant_categorie_id"
+
+        <addForeignKeyConstraint baseColumnNames="categorie"
+                                 baseTableName="detailmontant"
+                                 constraintName="fk_detailMontant_categorie_id"
                                  referencedColumnNames="id"
                                  referencedTableName="categorie"/>
 
-        <addForeignKeyConstraint baseColumnNames="debit_credit_associe_id"
-                                 baseTableName="detail_montant"
-                                 constraintName="fk_detail_montant_debit_credit_associe_id"
+        <addForeignKeyConstraint baseColumnNames="debitCreditAssocie"
+                                 baseTableName="detailmontant"
+                                 constraintName="fk_detailMontant_debitCreditAssocieId"
                                  referencedColumnNames="id"
-                                 referencedTableName="debit_credit"/>
+                                 referencedTableName="debitCredit"/>
 
     </changeSet>
 </databaseChangeLog>

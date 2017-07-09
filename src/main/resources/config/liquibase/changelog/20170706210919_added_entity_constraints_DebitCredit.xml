@@ -7,12 +7,12 @@
         Added the constraints for entity DebitCredit.
     -->
     <changeSet id="20170706210919-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="compte_rattache_id"
-                                 baseTableName="debit_credit"
-                                 constraintName="fk_debit_credit_compte_rattache_id"
+
+        <addForeignKeyConstraint baseColumnNames="compteRattache"
+                                 baseTableName="debitCredit"
+                                 constraintName="fk_debitCredit_compteRattacheId"
                                  referencedColumnNames="id"
-                                 referencedTableName="compte_bancaire"/>
+                                 referencedTableName="comptebancaire"/>
 
     </changeSet>
 </databaseChangeLog>

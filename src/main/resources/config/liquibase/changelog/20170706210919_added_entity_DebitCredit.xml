@@ -18,7 +18,7 @@
         Added the entity DebitCredit.
     -->
     <changeSet id="20170706210919-1" author="jhipster">
-        <createTable tableName="debit_credit">
+        <createTable tableName="debitcredit">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -26,34 +26,34 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="date_enregistrement" type="timestamp">
+            <column name="dateEnregistrement" type="timestamp">
                 <constraints nullable="true" />
             </column>
 
-            <column name="is_pointe" type="bit">
+            <column name="isPointe" type="bit">
                 <constraints nullable="true" />
             </column>
 
-            <column name="date_pointage" type="timestamp">
+            <column name="datePointage" type="timestamp">
                 <constraints nullable="true" />
             </column>
 
-            <column name="montant_total" type="${floatType}">
+            <column name="montantTotal" type="${floatType}">
                 <constraints nullable="true" />
             </column>
 
-            <column name="libelle_banque" type="varchar(255)">
+            <column name="libelleBanque" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="compte_rattache_id" type="bigint">
+            <column name="compteRattache" type="bigint">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="debit_credit" columnName="date_enregistrement" columnDataType="datetime"/>
-        <dropDefaultValue tableName="debit_credit" columnName="date_pointage" columnDataType="datetime"/>
-        
+        <dropDefaultValue tableName="debitCredit" columnName="dateEnregistrement" columnDataType="datetime"/>
+        <dropDefaultValue tableName="debitCredit" columnName="datePointage" columnDataType="datetime"/>
+
     </changeSet>
 </databaseChangeLog>

@@ -15,7 +15,7 @@ import java.util.Objects;
  * A DebitCredit.
  */
 @Entity
-@Table(name = "debit_credit")
+@Table(name = "debitcredit")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DebitCredit implements Serializable {
 
@@ -28,19 +28,19 @@ public class DebitCredit implements Serializable {
     @Column(name = "libelle")
     private String libelle;
 
-    @Column(name = "date_enregistrement")
+    @Column(name = "dateEnregistrement")
     private Instant dateEnregistrement;
 
-    @Column(name = "is_pointe")
+    @Column(name = "isPointe")
     private Boolean isPointe;
 
-    @Column(name = "date_pointage")
+    @Column(name = "datePointage")
     private Instant datePointage;
 
-    @Column(name = "montant_total")
+    @Column(name = "montantTotal")
     private Float montantTotal;
 
-    @Column(name = "libelle_banque")
+    @Column(name = "libelleBanque")
     private String libelleBanque;
 
     @OneToMany(mappedBy = "debitCreditAssocie")
@@ -49,7 +49,8 @@ public class DebitCredit implements Serializable {
     private Set<DetailMontant> details = new HashSet<>();
 
     @ManyToOne
-    private CompteBancaire compteRattache;
+    @JoinColumn(name = "compteRattache", referencedColumnName = "id", nullable = false)
+    private CompteBancaire comptebancaireByCompteRattache;
 
     public Long getId() {
         return id;
@@ -162,17 +163,17 @@ public class DebitCredit implements Serializable {
         this.details = detailMontants;
     }
 
-    public CompteBancaire getCompteRattache() {
-        return compteRattache;
+    public CompteBancaire getCompterattache() {
+        return comptebancaireByCompteRattache;
     }
 
-    public DebitCredit compteRattache(CompteBancaire compteBancaire) {
-        this.compteRattache = compteBancaire;
+    public DebitCredit compterattache(CompteBancaire compteBancaire) {
+        this.comptebancaireByCompteRattache = compteBancaire;
         return this;
     }
 
     public void setCompteRattache(CompteBancaire compteBancaire) {
-        this.compteRattache = compteBancaire;
+        this.comptebancaireByCompteRattache = compteBancaire;
     }
 
     @Override

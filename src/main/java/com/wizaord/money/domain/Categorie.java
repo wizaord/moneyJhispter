@@ -24,13 +24,16 @@ public class Categorie implements Serializable {
     @Column(name = "libelle")
     private String libelle;
 
-    @Column(name = "is_credit")
+    @Column(name = "isCredit")
     private Boolean isCredit;
 
-    @Column(name = "abonnement_regulier")
+    @Column(name = "abonnementRegulier")
     private Boolean abonnementRegulier;
 
-    @Column(name = "categorie_pere")
+    //TODO : remettre la relation vers le pere
+    //TODO : pouvoir retrouver son pere
+    //TODO : pouvoir retrouver ces enfants
+    @Column(name = "categoriePere")
     private Integer categoriePere;
 
     public Long getId() {

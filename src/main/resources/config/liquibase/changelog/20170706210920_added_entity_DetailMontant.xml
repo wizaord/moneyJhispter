@@ -18,7 +18,7 @@
         Added the entity DetailMontant.
     -->
     <changeSet id="20170706210920-1" author="jhipster">
-        <createTable tableName="detail_montant">
+        <createTable tableName="detailMontant">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -26,20 +26,20 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="virement_interne_compte_id" type="integer">
+            <column name="virementInterneCompteId" type="integer">
                 <constraints nullable="true" />
             </column>
 
-            <column name="categorie_id" type="bigint">
+            <column name="categorie" type="bigint">
                 <constraints nullable="true" />
             </column>
 
-            <column name="debit_credit_associe_id" type="bigint">
+            <column name="debitCreditAssocie" type="bigint">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>

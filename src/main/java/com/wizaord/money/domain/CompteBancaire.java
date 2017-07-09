@@ -15,7 +15,7 @@ import java.util.Objects;
  * A CompteBancaire.
  */
 @Entity
-@Table(name = "compte_bancaire")
+@Table(name = "comptebancaire")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CompteBancaire implements Serializable {
 
@@ -28,28 +28,28 @@ public class CompteBancaire implements Serializable {
     @Column(name = "libelle")
     private String libelle;
 
-    @Column(name = "numero_compte")
+    @Column(name = "numeroCompte")
     private String numeroCompte;
 
-    @Column(name = "montant_solde")
+    @Column(name = "montantSolde")
     private Float montantSolde;
 
-    @Column(name = "date_ouverture")
+    @Column(name = "dateOuverture")
     private Instant dateOuverture;
 
-    @Column(name = "date_fermeture")
+    @Column(name = "dateFermeture")
     private Instant dateFermeture;
 
-    @Column(name = "is_clos")
+    @Column(name = "isClos")
     private Boolean isClos;
 
-    @Column(name = "is_deleted")
+    @Column(name = "isDeleted")
     private Boolean isDeleted;
 
     @Column(name = "proprietaire")
     private Integer proprietaire;
 
-    @OneToMany(mappedBy = "compteRattache")
+    @OneToMany(mappedBy = "comptebancaireByCompteRattache")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DebitCredit> debitscredits = new HashSet<>();
@@ -61,7 +61,7 @@ public class CompteBancaire implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
+//
     public String getLibelle() {
         return libelle;
     }

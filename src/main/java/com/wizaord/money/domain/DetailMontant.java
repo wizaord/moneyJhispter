@@ -11,7 +11,7 @@ import java.util.Objects;
  * A DetailMontant.
  */
 @Entity
-@Table(name = "detail_montant")
+@Table(name = "detailmontant")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DetailMontant implements Serializable {
 
@@ -24,13 +24,15 @@ public class DetailMontant implements Serializable {
     @Column(name = "montant")
     private Double montant;
 
-    @Column(name = "virement_interne_compte_id")
+    @Column(name = "virementInterneCompteId")
     private Integer virementInterneCompteId;
 
     @ManyToOne
+    @JoinColumn(name = "categorie", referencedColumnName = "id")
     private Categorie categorie;
 
     @ManyToOne
+    @JoinColumn(name = "debitCreditAssocie", referencedColumnName = "id", nullable = false)
     private DebitCredit debitCreditAssocie;
 
     public Long getId() {

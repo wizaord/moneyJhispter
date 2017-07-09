@@ -26,20 +26,20 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="is_credit" type="bit">
+            <column name="isCredit" type="bit">
                 <constraints nullable="true" />
             </column>
 
-            <column name="abonnement_regulier" type="bit">
+            <column name="abonnementRegulier" type="bit">
                 <constraints nullable="true" />
             </column>
 
-            <column name="categorie_pere" type="integer">
+            <column name="categoriePere" type="integer">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>
