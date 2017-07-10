@@ -1,0 +1,6 @@
+id;libelle;categoriePere;isCredit;abonnementRegulier
+1;categorie1;null;1;1
+2;categorie2;null;1;0
+3;categorie3;null;0;0
+4;categorie4;1;0;0
+5;categorie5;1;0;0
