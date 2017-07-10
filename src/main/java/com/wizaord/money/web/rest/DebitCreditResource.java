@@ -5,9 +5,15 @@ import com.wizaord.money.domain.DebitCredit;
 
 import com.wizaord.money.repository.DebitCreditRepository;
 import com.wizaord.money.web.rest.util.HeaderUtil;
+import com.wizaord.money.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,11 +87,26 @@ public class DebitCreditResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of debitCredits in body
      */
-    @GetMapping("/debit-credits")
+    /*@GetMapping("/debit-credits")
     @Timed
     public List<DebitCredit> getAllDebitCredits() {
         log.debug("REST request to get all DebitCredits");
         return debitCreditRepository.findAll();
+    }*/
+
+    /**
+     * GET  /debit-credits : get all the debitCredits.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of debitCredits in body
+     */
+    @GetMapping("/debit-credits")
+    @Timed
+    public ResponseEntity<List<DebitCredit>> getAllDebitCredits(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of CompteBancaires");
+        Page<DebitCredit> page = debitCreditRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/debit-credits");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**

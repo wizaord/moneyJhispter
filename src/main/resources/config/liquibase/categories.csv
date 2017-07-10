@@ -1,6 +1,114 @@
 id;libelle;categoriePere;isCredit;abonnementRegulier
-1;categorie1;null;1;1
-2;categorie2;null;1;0
-3;categorie3;null;0;0
-4;categorie4;1;0;0
-5;categorie5;1;0;0
+6031;Placements2;null;1;1
+6032;Intérêts;6031;1;0
+6033;EMPTY;null;1;0
+6034;Auto-moto;null;0;0
+6035;Carburant;6034;0;0
+6036;Abonnement-factures;null;0;0
+6037;Assurance habitation;6036;0;0
+6038;Parking-péage;6034;0;0
+6039;Alimentation;null;0;0
+6040;Transports;null;0;0
+6041;Metro-Bus-Train;6040;0;0
+6042;Équipement du logement;null;0;0
+6043;Ordinateur et accessoires;6042;0;0
+6044;Frais bancaires;null;0;0
+6045;Services - Abonnement;6044;0;0
+6046;Divers;null;0;0
+6047;Retrait d'espèces;6046;0;0
+6048;Loyer;6145;0;0
+6049;Virement autres comptes;null;1;0
+6050;Restaurant;6039;0;0
+6051;Carte de paiement - de crédit;6044;0;0
+6052;Autres revenus;null;1;0
+6053;Allocations familiales;6052;1;0
+6054;Internet;6036;0;0
+6055;Téléphone;6036;0;0
+6056;remboursement;null;1;0
+6057;Electricité;6036;0;0
+6058;Bourses;null;1;0
+6059;Cadeaux;6046;0;0
+6060;Soins de la personne;null;0;0
+6061;Coiffeur-esthéticienne;6060;0;0
+6062;Vacances;null;0;0
+6063;Divers;6062;0;0
+6064;Alimentation-restaurant;6062;0;0
+6065;Habillement;null;0;0
+6066;Chaussures;6065;0;0
+6067;Portable;6036;0;0
+6068;Voyage;6062;0;0
+6069;Eau;6036;0;0
+6070;Accessoires;6065;0;0
+6071;Loisirs-culture-sport;null;0;0
+6072;Jeux;6071;0;0
+6073;Traitements et salaires;null;1;0
+6074;Salaire net;6073;1;0
+6075;Santé;null;0;0
+6076;Pharmacie;6075;0;0
+6077;Vetements;6065;0;0
+6078;Cinéma-spectacle;6071;0;0
+6079;Frais professionnels;null;0;0
+6080;Remboursés;6079;0;0
+6081;Télévision et accessoires;6042;0;0
+6082;Ameublement;6042;0;0
+6083;Travaux - Décoration;6042;0;0
+6084;GEG;6036;0;0
+6085;Remboursement Frais;6073;1;0
+6086;Oculiste;6075;0;0
+6087;Impôts;null;0;0
+6088;Autres impôts;6087;0;0
+6089;Ski;6062;0;0
+6090;Location de matérielles;6062;0;0
+6091;Accident du travail;6052;1;0
+6092;Informatique;6042;0;0
+6093;complémentaire;6052;1;0
+6094;Jardinage;6042;0;0
+6095;Assurance Auto-moto;6034;0;0
+6096;Dentiste;6075;0;0
+6097;Activité sportive;6071;0;0
+6098;Livres;6071;0;0
+6099;Enfants;null;0;0
+6100;Frais de scolarité;6099;0;0
+6101;Primes diverses;6073;1;0
+6102;Souvenirs;6062;0;0
+6103;Logement;6062;0;0
+6104;Taxe habitation;6145;0;0
+6105;Médecin;6075;0;0
+6106;CD - K7 - DVD (Achat);6071;0;0
+6107;Bricolage - Outils;6042;0;0
+6108;Dons et cadeaux;6052;1;0
+6109;Animaux domestiques;null;0;0
+6110;Fournitures diverses;6109;0;0
+6111;Dons caritatifs;6046;0;0
+6112;Musées-expositions;6071;0;0
+6113;Articles de sport;6071;0;0
+6114;Impôts sur le revenu;6087;0;0
+6115;Électroménager;6042;0;0
+6116;Entretien-réparations;6034;0;0
+6117;Weekend;6062;0;0
+6119;Alimentation;6109;0;0
+6120;Agios;6044;0;0
+6121;Séjours;6062;0;0
+6122;Café-Bar;6039;0;0
+6123;Frais divers;6044;0;0
+6124;Remboursement de prêt immobilier;6145;0;0
+6125;Virmt vers un compte supprimé;null;0;0
+6126;Charges;6036;0;0
+6127;Épicerie;6039;0;0
+6128;Activité sportive ou culturelle;6099;0;0
+6129;Journaux;6071;0;0
+6130;Excursion-visite;6062;0;0
+6131;Primes résultats;6073;1;0
+6132;Kinésithérapeute;6075;0;0
+6133;Taxe foncière;6145;0;0
+6134;Impôts locaux;6145;0;0
+6135;Location de voiture;6062;0;0
+6136;Achat voiture;6034;0;0
+6137;Accessoires;6034;0;0
+6138;Prêt;null;0;0
+6139;Intérêts du prêt immobilier;6138;0;0
+6140;Dividendes;6031;1;0
+6141;Libre choix de garde;6052;1;0
+6142;Nourrice;6099;0;0
+6143;Achat maison/appartement;6145;0;0
+6145;Habitation frais;null;0;0

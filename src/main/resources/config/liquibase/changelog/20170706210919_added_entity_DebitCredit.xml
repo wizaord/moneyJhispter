@@ -56,4 +56,10 @@
         <dropDefaultValue tableName="debitCredit" columnName="datePointage" columnDataType="datetime"/>
 
     </changeSet>
+
+    <!-- added tests values in dev context -->
+    <changeSet id="20170706210919-2" author="cmouilleron" context="dev">
+        <loadData encoding="UTF-8" file="config/liquibase/debitcredit.csv" separator=";" tableName="debitcredit"/>
+    </changeSet>
+
 </databaseChangeLog>

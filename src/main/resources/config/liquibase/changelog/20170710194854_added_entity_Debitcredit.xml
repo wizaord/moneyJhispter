@@ -15,10 +15,10 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity CompteBancaire.
+        Added the entity Debitcredit.
     -->
-    <changeSet id="20170706210918-1" author="jhipster">
-        <createTable tableName="comptebancaire">
+    <changeSet id="20170710194854-1" author="jhipster">
+        <createTable tableName="debitcredit">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -26,43 +26,30 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="numeroCompte" type="varchar(255)">
+            <column name="date_enregistrement" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="is_pointe" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="date_pointage" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="montant_total" type="${floatType}">
                 <constraints nullable="true" />
             </column>
 
-            <column name="montantSolde" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="dateOuverture" type="timestamp">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="dateFermeture" type="timestamp">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="isClos" type="bit">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="isDeleted" type="bit">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="proprietaire" type="integer">
+            <column name="libelle_banque" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="compteBancaire" columnName="dateOuverture" columnDataType="datetime"/>
-        <dropDefaultValue tableName="compteBancaire" columnName="dateFermeture" columnDataType="datetime"/>
-
-    </changeSet>
-
-    <!-- added tests values in dev context -->
-    <changeSet id="20170706210918-2" author="cmouilleron" context="dev">
-        <loadData encoding="UTF-8" file="config/liquibase/comptebancaire.csv" separator=";" tableName="comptebancaire"/>
+        <dropDefaultValue tableName="debitcredit" columnName="date_enregistrement" columnDataType="datetime"/>
+        <dropDefaultValue tableName="debitcredit" columnName="date_pointage" columnDataType="datetime"/>
+        
     </changeSet>
 </databaseChangeLog>
