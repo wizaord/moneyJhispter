@@ -11,10 +11,29 @@ import { DebitCreditDeletePopupComponent } from './debit-credit-delete-dialog.co
 
 import { Principal } from '../../shared';
 
+@Injectable()
+export class DebitCreditResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+        };
+    }
+}
+
 export const debitCreditRoute: Routes = [
     {
         path: 'debit-credit',
         component: DebitCreditComponent,
+        resolve: {
+            'pagingParams': DebitCreditResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'moneyJhipsterApp.debitCredit.home.title'

@@ -14,7 +14,7 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 })
 export class CompteBancaireComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     compteBancaires: CompteBancaire[];
     error: any;
     success: any;
@@ -42,6 +42,8 @@ currentAccount: any;
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
+            console.log('plop compte bancaire');
+            console.log(JSON.stringify(data));
             this.page = data['pagingParams'].page;
             this.previousPage = data['pagingParams'].page;
             this.reverse = data['pagingParams'].ascending;

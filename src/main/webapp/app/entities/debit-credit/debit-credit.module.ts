@@ -13,6 +13,7 @@ import {
     DebitCreditDeleteDialogComponent,
     debitCreditRoute,
     debitCreditPopupRoute,
+    DebitCreditResolvePagingParams
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         DebitCreditService,
         DebitCreditPopupService,
+        DebitCreditResolvePagingParams
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
