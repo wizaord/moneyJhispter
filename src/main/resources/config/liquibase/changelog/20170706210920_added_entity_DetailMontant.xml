@@ -42,4 +42,9 @@
         </createTable>
 
     </changeSet>
+
+    <!-- added tests values in dev context -->
+    <changeSet id="20170706210920-2" author="cmouilleron" context="dev" failOnError="false">
+        <loadData encoding="UTF-8" file="config/liquibase/detailmontant.csv" separator=";" tableName="detailMontant"/>
+    </changeSet>
 </databaseChangeLog>

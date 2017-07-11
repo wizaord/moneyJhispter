@@ -37,11 +37,8 @@ export class DebitCreditComponent implements OnInit, OnDestroy {
         private paginationUtil: JhiPaginationUtil,
         private paginationConfig: PaginationConfig
     ) {
-        console.log('constructor called');
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
-            console.log('plop debit credit');
-            console.log(JSON.stringify(data));
             this.page = data['pagingParams'].page;
             this.previousPage = data['pagingParams'].page;
             this.reverse = data['pagingParams'].ascending;

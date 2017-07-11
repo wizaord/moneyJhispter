@@ -15,8 +15,8 @@
     <div class="table-responsive" *ngIf="detailMontants">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th><span jhiTranslate="moneyJhipsterApp.detailMontant.montant">Montant</span></th>
             <th><span jhiTranslate="moneyJhipsterApp.detailMontant.virementInterneCompteId">Virement Interne Compte Id</span></th>
             <th><span jhiTranslate="moneyJhipsterApp.detailMontant.categorie">Categorie</span></th>
@@ -66,5 +66,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="detailMontants && detailMontants.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
     </div>
 </div>

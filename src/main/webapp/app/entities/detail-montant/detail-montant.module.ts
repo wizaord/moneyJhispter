@@ -13,6 +13,7 @@ import {
     DetailMontantDeleteDialogComponent,
     detailMontantRoute,
     detailMontantPopupRoute,
+    DebitMontantResolvePagingParams
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         DetailMontantService,
         DetailMontantPopupService,
+        DebitMontantResolvePagingParams
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
