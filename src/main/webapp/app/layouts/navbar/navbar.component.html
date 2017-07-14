@@ -9,15 +9,29 @@
         </a>
     </div>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav navbar-left">
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span jhiTranslate="global.menu.home">Home</span>
                 </a>
             </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="accounts" (click)="collapseNavbar()">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span jhiTranslate="global.menu.billing.account">Compte</span>
+                </a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="states" (click)="collapseNavbar()">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span jhiTranslate="global.menu.billing.state">Etats</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                     <span>
                         <i class="fa fa-th-list" aria-hidden="true"></i>

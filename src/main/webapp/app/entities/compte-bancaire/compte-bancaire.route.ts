@@ -35,7 +35,7 @@ export const compteBancaireRoute: Routes = [
             'pagingParams': CompteBancaireResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.compteBancaire.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -43,7 +43,7 @@ export const compteBancaireRoute: Routes = [
         path: 'compte-bancaire/:id',
         component: CompteBancaireDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.compteBancaire.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -55,7 +55,7 @@ export const compteBancairePopupRoute: Routes = [
         path: 'compte-bancaire-new',
         component: CompteBancairePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.compteBancaire.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -65,7 +65,7 @@ export const compteBancairePopupRoute: Routes = [
         path: 'compte-bancaire/:id/edit',
         component: CompteBancairePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.compteBancaire.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -75,7 +75,7 @@ export const compteBancairePopupRoute: Routes = [
         path: 'compte-bancaire/:id/delete',
         component: CompteBancaireDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.compteBancaire.home.title'
         },
         canActivate: [UserRouteAccessService],

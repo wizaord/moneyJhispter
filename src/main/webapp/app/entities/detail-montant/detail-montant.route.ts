@@ -35,7 +35,7 @@ export const detailMontantRoute: Routes = [
             'pagingParams': DebitMontantResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.detailMontant.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -43,7 +43,7 @@ export const detailMontantRoute: Routes = [
         path: 'detail-montant/:id',
         component: DetailMontantDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.detailMontant.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -55,7 +55,7 @@ export const detailMontantPopupRoute: Routes = [
         path: 'detail-montant-new',
         component: DetailMontantPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.detailMontant.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -65,7 +65,7 @@ export const detailMontantPopupRoute: Routes = [
         path: 'detail-montant/:id/edit',
         component: DetailMontantPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.detailMontant.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -75,7 +75,7 @@ export const detailMontantPopupRoute: Routes = [
         path: 'detail-montant/:id/delete',
         component: DetailMontantDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.detailMontant.home.title'
         },
         canActivate: [UserRouteAccessService],

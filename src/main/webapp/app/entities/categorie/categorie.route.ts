@@ -16,7 +16,7 @@ export const categorieRoute: Routes = [
         path: 'categorie',
         component: CategorieComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.categorie.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -24,7 +24,7 @@ export const categorieRoute: Routes = [
         path: 'categorie/:id',
         component: CategorieDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.categorie.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -36,7 +36,7 @@ export const categoriePopupRoute: Routes = [
         path: 'categorie-new',
         component: CategoriePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.categorie.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -46,7 +46,7 @@ export const categoriePopupRoute: Routes = [
         path: 'categorie/:id/edit',
         component: CategoriePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.categorie.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -56,7 +56,7 @@ export const categoriePopupRoute: Routes = [
         path: 'categorie/:id/delete',
         component: CategorieDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.categorie.home.title'
         },
         canActivate: [UserRouteAccessService],

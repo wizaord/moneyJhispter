@@ -35,7 +35,7 @@ export const debitCreditRoute: Routes = [
             'pagingParams': DebitCreditResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.debitCredit.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -43,7 +43,7 @@ export const debitCreditRoute: Routes = [
         path: 'debit-credit/:id',
         component: DebitCreditDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.debitCredit.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -55,7 +55,7 @@ export const debitCreditPopupRoute: Routes = [
         path: 'debit-credit-new',
         component: DebitCreditPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.debitCredit.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -65,7 +65,7 @@ export const debitCreditPopupRoute: Routes = [
         path: 'debit-credit/:id/edit',
         component: DebitCreditPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.debitCredit.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -75,7 +75,7 @@ export const debitCreditPopupRoute: Routes = [
         path: 'debit-credit/:id/delete',
         component: DebitCreditDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'moneyJhipsterApp.debitCredit.home.title'
         },
         canActivate: [UserRouteAccessService],
