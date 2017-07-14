@@ -2,21 +2,17 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { MoneyJhipsterSharedModule } from '../shared';
-
-import {
-    moneyState,
-    AccountsComponent,
-    StatesComponent
-} from './';
+import { AccountModule } from './account/account.module';
+import { StateModule } from './state/state.module';
 
 @NgModule({
     imports: [
         MoneyJhipsterSharedModule,
-        RouterModule.forRoot(moneyState, { useHash: true })
+        AccountModule,
+        StateModule
     ],
     declarations: [
-        AccountsComponent,
-        StatesComponent],
+    ],
     providers: [
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
