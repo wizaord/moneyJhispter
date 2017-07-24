@@ -16,6 +16,26 @@ export class CompteBancaireService {
         montantSolde: 2345,
         proprietaire: 123,
         numeroCompte: 'AZERTYUIO'
+    }, {
+        id: 2,
+        dateFermeture: null,
+        dateOuverture: null,
+        isClos: false,
+        isDeleted: false,
+        libelle: 'my account',
+        montantSolde: 2345,
+        proprietaire: 123,
+        numeroCompte: 'AZERTYUIO'
+    }, {
+        id: 3,
+        dateFermeture: null,
+        dateOuverture: null,
+        isClos: false,
+        isDeleted: false,
+        libelle: 'my account',
+        montantSolde: -10,
+        proprietaire: 123,
+        numeroCompte: 'AZERTYUIO'
     }];
 
   constructor(private http: Http) { }

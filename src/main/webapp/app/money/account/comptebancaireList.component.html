@@ -1,6 +1,81 @@
-<p>
-    accounts works!
-</p>
-<ul *ngFor="let compte of accounts">
-    <li>{{compte.id}} : {{compte.libelle}}</li>
-</ul>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 hidden-sm hidden-xs">
+            <div ngbDropdown class="d-inline-block">
+                <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Actions</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownBasic1">
+                    <button class="dropdown-item">Creer</button>
+                    <button class="dropdown-item">Renommer</button>
+                    <button class="dropdown-item">Supprimer</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-10">
+            <div class="container-fluid">
+                <div class="col align-self-end">
+                    Solde tout compte : XXX€
+                </div>
+                <div class="col-md-offset-1">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="compte-actif-panel">
+                        <ngb-panel id="compte-actif-panel" title="Comptes Actifs">
+                            <ng-template ngbPanelContent>
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Compte</th>
+                                        <th>Solde</th>
+                                        <th>Dernière transaction</th>
+                                        <th class="col-xs-1"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let compte of accounts " [ngClass]="{'table-danger': compte.montantSolde < 0}">
+                                            <td><a href="/money/comptes/compteAfficher?compteId=1">1</a></td>
+                                            <td>{{compte.montantSolde}}</td>
+                                            <td> TODO</td>
+                                            <td>
+                                                <button type='button' class='btn btn-default btn-xs' (click)="closeAccount(compte)"><i class='fa fa-folder' aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <div class="col-md-offset-1">
+                    <ngb-accordion #acc="ngbAccordion">
+                        <ngb-panel id="compte-inactif-panel" title="Comptes Inactifs">
+                            <ng-template ngbPanelContent>
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Compte</th>
+                                        <th>Solde</th>
+                                        <th>Dernière transaction</th>
+                                        <th class="col-xs-1"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let compte of accountsInactif " [ngClass]="{'table-danger': compte.montantSolde < 0}">
+                                        <td><a href="/money/comptes/compteAfficher?compteId=1">1</a></td>
+                                        <td>{{compte.montantSolde}}</td>
+                                        <td> TODO</td>
+                                        <td>
+                                            <button type='button' class='btn btn-default btn-xs' (click)="openAccount(compte)"><i class='fa fa-folder-open' aria-hidden="true"></i></button>
+                                            <button type='button' class='btn btn-default btn-xs' (click)="deleteAccount(compte)"><i class='fa fa-trash' aria-hidden="true"></i></button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

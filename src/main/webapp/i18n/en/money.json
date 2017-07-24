@@ -1,0 +1,9 @@
+{
+    "moneyJhipsterApp": {
+        "accounts" : {
+            "home": {
+                "title": "Accounts"
+            }
+        }
+    }
+}
