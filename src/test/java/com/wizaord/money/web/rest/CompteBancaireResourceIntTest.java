@@ -1,11 +1,9 @@
 package com.wizaord.money.web.rest;
 
 import com.wizaord.money.MoneyJhipsterApp;
-
 import com.wizaord.money.domain.CompteBancaire;
 import com.wizaord.money.repository.CompteBancaireRepository;
 import com.wizaord.money.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,8 +58,8 @@ public class CompteBancaireResourceIntTest {
     private static final Boolean DEFAULT_IS_DELETED = false;
     private static final Boolean UPDATED_IS_DELETED = true;
 
-    private static final Integer DEFAULT_PROPRIETAIRE = 1;
-    private static final Integer UPDATED_PROPRIETAIRE = 2;
+    private static final Long DEFAULT_PROPRIETAIRE = 1L;
+    private static final Long UPDATED_PROPRIETAIRE = 2L;
 
     @Autowired
     private CompteBancaireRepository compteBancaireRepository;

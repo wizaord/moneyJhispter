@@ -19,7 +19,7 @@ export class ComptebancaireListComponent implements OnInit {
 
     ngOnInit() {
         // recuperation de la liste de comptes
-        this.compteBancaireSrv.getAllUserAccount().subscribe((response) => {
+        this.compteBancaireSrv.findAll().subscribe((response) => {
             this.accounts = response.filter((acc) => acc.isClos === false);
             this.accountsInactif = response.filter((acc) => acc.isClos === true);
         });

@@ -371,6 +371,11 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-core</artifactId>
+            <version>1.4.15.Final</version>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
     <build>

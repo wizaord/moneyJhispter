@@ -8,8 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A CompteBancaire.
@@ -47,7 +47,7 @@ public class CompteBancaire implements Serializable {
     private Boolean isDeleted;
 
     @Column(name = "proprietaire")
-    private Integer proprietaire;
+    private Long proprietaire;
 
     @OneToMany(mappedBy = "comptebancaireByCompteRattache")
     @JsonIgnore
@@ -153,16 +153,16 @@ public class CompteBancaire implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public Integer getProprietaire() {
+    public Long getProprietaire() {
         return proprietaire;
     }
 
-    public CompteBancaire proprietaire(Integer proprietaire) {
+    public CompteBancaire proprietaire(Long proprietaire) {
         this.proprietaire = proprietaire;
         return this;
     }
 
-    public void setProprietaire(Integer proprietaire) {
+    public void setProprietaire(Long proprietaire) {
         this.proprietaire = proprietaire;
     }
 

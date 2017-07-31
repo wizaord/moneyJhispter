@@ -1,11 +1,9 @@
 package com.wizaord.money.web.rest;
 
 import com.wizaord.money.MoneyJhipsterApp;
-
 import com.wizaord.money.domain.DebitCredit;
 import com.wizaord.money.repository.DebitCreditRepository;
 import com.wizaord.money.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

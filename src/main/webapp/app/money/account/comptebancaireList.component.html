@@ -33,8 +33,8 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let compte of accounts " [ngClass]="{'table-danger': compte.montantSolde < 0}">
-                                            <td><a href="/money/comptes/compteAfficher?compteId=1">1</a></td>
-                                            <td>{{compte.montantSolde}}</td>
+                                            <td><a href="/money/comptes/compteAfficher?compteId={{compte.id}}">{{compte.libelle}}</a></td>
+                                            <td>{{compte.montantSolde}} €</td>
                                             <td> TODO</td>
                                             <td>
                                                 <button type='button' class='btn btn-default btn-xs' (click)="closeAccount(compte)"><i class='fa fa-folder' aria-hidden="true"></i></button>
@@ -61,8 +61,8 @@
                                     </thead>
                                     <tbody>
                                     <tr *ngFor="let compte of accountsInactif " [ngClass]="{'table-danger': compte.montantSolde < 0}">
-                                        <td><a href="/money/comptes/compteAfficher?compteId=1">1</a></td>
-                                        <td>{{compte.montantSolde}}</td>
+                                        <td><a href="/money/comptes/compteAfficher?compteId={{compte.id}}">{{compte.libelle}}</a></td>
+                                        <td>{{compte.montantSolde}} €</td>
                                         <td> TODO</td>
                                         <td>
                                             <button type='button' class='btn btn-default btn-xs' (click)="openAccount(compte)"><i class='fa fa-folder-open' aria-hidden="true"></i></button>
