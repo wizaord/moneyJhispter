@@ -6,11 +6,12 @@ export class CompteBancaire {
         public montantSolde?: number,
         public dateOuverture?: any,
         public dateFermeture?: any,
-        public isClos?: boolean,
-        public isDeleted?: boolean,
-        public proprietaire?: number
+        public clos?: boolean,
+        public deleted?: boolean,
+        public proprietaire?: number,
+        public lastTransaction?: any,
     ) {
-        this.isClos = false;
-        this.isDeleted = false;
+        this.clos = false;
+        this.deleted = false;
     }
 }
