@@ -17,7 +17,7 @@ public class AccountDetailDTO {
     private Instant dateFermeture;
     private Boolean isClos;
     private Boolean isDeleted;
-    private Long proprietaire;
+    private Integer proprietaire;
     private Instant lastTransaction;
 
 
@@ -25,7 +25,7 @@ public class AccountDetailDTO {
         // Empty constructor needed for Jackson.
     }
 
-    public AccountDetailDTO(Long id, String libelle, String numeroCompte, Float montantSolde, Instant dateOuverture, Instant dateFermeture, Boolean isClos, Boolean isDeleted, Long proprietaire, Instant lastTransaction) {
+    public AccountDetailDTO(Long id, String libelle, String numeroCompte, Float montantSolde, Instant dateOuverture, Instant dateFermeture, Boolean isClos, Boolean isDeleted, Integer proprietaire, Instant lastTransaction) {
         this.id = id;
         this.libelle = libelle;
         this.numeroCompte = numeroCompte;
@@ -106,11 +106,11 @@ public class AccountDetailDTO {
         isDeleted = deleted;
     }
 
-    public Long getProprietaire() {
+    public Integer getProprietaire() {
         return proprietaire;
     }
 
-    public void setProprietaire(Long proprietaire) {
+    public void setProprietaire(Integer proprietaire) {
         this.proprietaire = proprietaire;
     }
 

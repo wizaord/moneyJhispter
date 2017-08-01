@@ -1,8 +1,12 @@
 {
     "moneyJhipsterApp": {
-        "accounts" : {
+        "accounts": {
             "home": {
                 "title": "Accounts"
+            },
+            "action": {
+                "create": "Create",
+                "rename": "Rename"
             }
         }
     }

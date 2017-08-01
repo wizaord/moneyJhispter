@@ -4,9 +4,8 @@
             <div ngbDropdown class="d-inline-block">
                 <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Actions</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownBasic1">
-                    <button class="dropdown-item">Creer</button>
-                    <button class="dropdown-item">Renommer</button>
-                    <button class="dropdown-item">Supprimer</button>
+                    <button class="dropdown-item"><span jhiTranslate="moneyJhipsterApp.accounts.action.create">Creer</span></button>
+                    <button class="dropdown-item"><span jhiTranslate="moneyJhipsterApp.accounts.action.rename">Renommer</span></button>
                 </div>
             </div>
 
@@ -14,7 +13,7 @@
         <div class="col-md-10">
             <div class="container-fluid">
                 <div class="col align-self-end">
-                    Solde tout compte : XXX€
+                    Solde tout compte : {{soldeToutCompte}} €
                 </div>
                 <div class="col-md-offset-1">
                     <ngb-accordion #acc="ngbAccordion" activeIds="compte-actif-panel">

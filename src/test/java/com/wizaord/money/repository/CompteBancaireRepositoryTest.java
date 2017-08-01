@@ -30,18 +30,18 @@ public class CompteBancaireRepositoryTest {
     @Transactional
     public void getAllByProprietaire() throws Exception {
 
-        compteBancaireRepository.saveAndFlush(createCompteBancaire("first", false, 1L));
-        compteBancaireRepository.saveAndFlush(createCompteBancaire("second", false, 1L));
-        compteBancaireRepository.saveAndFlush(createCompteBancaire("third", false, 1L));
-        compteBancaireRepository.saveAndFlush(createCompteBancaire("four", true, 1L));
-        compteBancaireRepository.saveAndFlush(createCompteBancaire("five", true, 2L));
+        compteBancaireRepository.saveAndFlush(createCompteBancaire("first", false, 1));
+        compteBancaireRepository.saveAndFlush(createCompteBancaire("second", false, 1));
+        compteBancaireRepository.saveAndFlush(createCompteBancaire("third", false, 1));
+        compteBancaireRepository.saveAndFlush(createCompteBancaire("four", true, 1));
+        compteBancaireRepository.saveAndFlush(createCompteBancaire("five", true, 2));
 
-        List<CompteBancaire> allByProprietaire = compteBancaireRepository.getAllByProprietaire(1L);
+        List<CompteBancaire> allByProprietaire = compteBancaireRepository.getAllByProprietaire(1);
         Assertions.assertThat(allByProprietaire).isNotNull().isNotEmpty().hasSize(4);
     }
 
 
-    private CompteBancaire createCompteBancaire(final String libelle, final boolean isClos, final Long proprio) {
+    private CompteBancaire createCompteBancaire(final String libelle, final boolean isClos, final Integer proprio) {
         CompteBancaire cb = new CompteBancaire()
             .libelle(libelle)
             .isClos(isClos)

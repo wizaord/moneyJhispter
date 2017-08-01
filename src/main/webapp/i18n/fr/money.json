@@ -1,8 +1,12 @@
 {
     "moneyJhipsterApp": {
-        "accounts" : {
+        "accounts": {
             "home": {
                 "title": "CompteBancaires"
+            },
+            "action": {
+                "create": "Creer",
+                "rename" : "Renommer"
             }
         }
     }

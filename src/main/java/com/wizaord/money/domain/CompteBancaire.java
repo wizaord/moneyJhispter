@@ -47,7 +47,7 @@ public class CompteBancaire implements Serializable {
     private Boolean isDeleted;
 
     @Column(name = "proprietaire")
-    private Long proprietaire;
+    private Integer proprietaire;
 
     @OneToMany(mappedBy = "comptebancaireByCompteRattache")
     @JsonIgnore
@@ -153,16 +153,16 @@ public class CompteBancaire implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public Long getProprietaire() {
+    public Integer getProprietaire() {
         return proprietaire;
     }
 
-    public CompteBancaire proprietaire(Long proprietaire) {
+    public CompteBancaire proprietaire(Integer proprietaire) {
         this.proprietaire = proprietaire;
         return this;
     }
 
-    public void setProprietaire(Long proprietaire) {
+    public void setProprietaire(Integer proprietaire) {
         this.proprietaire = proprietaire;
     }
 

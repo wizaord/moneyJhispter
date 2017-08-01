@@ -11,10 +11,12 @@ export class ComptebancaireListComponent implements OnInit {
 
     public accounts: CompteBancaire[];
     public accountsInactif: CompteBancaire[];
+    public soldeToutCompte: number;
 
     constructor(public compteBancaireSrv: CompteBancaireService) {
         this.accounts = [];
         this.accountsInactif = [];
+        this.soldeToutCompte = 0;
     }
 
     ngOnInit() {
@@ -22,25 +24,30 @@ export class ComptebancaireListComponent implements OnInit {
         this.compteBancaireSrv.findAll().subscribe((response) => {
             this.accounts = response.filter((acc) => acc.clos === false);
             this.accountsInactif = response.filter((acc) => acc.clos === true);
+
+            response.forEach((elt) => this.soldeToutCompte += elt.montantSolde);
         });
     }
 
     closeAccount(compte: CompteBancaire) {
-        // TODO : faire la fermeture du compte
-        this.accounts.splice(this.accounts.indexOf(compte), 1);
-        this.accountsInactif.push(compte);
-        console.log('Fermeture du compte ' + compte.id);
+        this.compteBancaireSrv.closeAccount(compte.id).subscribe((response) => {
+            this.accounts.splice(this.accounts.indexOf(compte), 1);
+            this.accountsInactif.push(compte);
+            console.log('Fermeture du compte ' + compte.id);
+        })
     }
 
     openAccount(compte: CompteBancaire) {
-        // TODO : faire l'ouverture du compte
-        this.accountsInactif.splice(this.accounts.indexOf(compte), 1);
-        this.accounts.push(compte);
-        console.log('Ouverture du compte ' + compte.id);
+        this.compteBancaireSrv.reopenAccount(compte.id).subscribe((response) => {
+            this.accountsInactif.splice(this.accounts.indexOf(compte), 1);
+            this.accounts.push(compte);
+            console.log('Ouverture du compte ' + compte.id);
+        })
     }
 
     deleteAccount(compte: CompteBancaire) {
-        // TODO : faire la suppression du compte
-        this.accountsInactif.splice(this.accounts.indexOf(compte), 1);
+        this.compteBancaireSrv.deleteAccount(compte.id).subscribe((response) => {
+            this.accountsInactif.splice(this.accounts.indexOf(compte), 1);
+        })
     }
 }

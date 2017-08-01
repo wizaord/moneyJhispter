@@ -13,5 +13,5 @@ import java.util.List;
 @Repository
 public interface CompteBancaireRepository extends JpaRepository<CompteBancaire,Long> {
 
-    List<CompteBancaire> getAllByProprietaire(final Long proprietaireId);
+    List<CompteBancaire> getAllByProprietaire(final Integer proprietaireId);
 }

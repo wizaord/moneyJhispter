@@ -58,8 +58,8 @@ public class CompteBancaireResourceIntTest {
     private static final Boolean DEFAULT_IS_DELETED = false;
     private static final Boolean UPDATED_IS_DELETED = true;
 
-    private static final Long DEFAULT_PROPRIETAIRE = 1L;
-    private static final Long UPDATED_PROPRIETAIRE = 2L;
+    private static final Integer DEFAULT_PROPRIETAIRE = 1;
+    private static final Integer UPDATED_PROPRIETAIRE = 2;
 
     @Autowired
     private CompteBancaireRepository compteBancaireRepository;
