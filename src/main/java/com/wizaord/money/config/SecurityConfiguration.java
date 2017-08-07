@@ -142,7 +142,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/profile-info").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/api/users").hasAuthority(AuthoritiesConstants.USER)
-            .antMatchers("/api/users/accounts/*").hasAuthority(AuthoritiesConstants.USER)
+            .antMatchers("/api/users/accounts/**").hasAuthority(AuthoritiesConstants.USER)
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/v2/api-docs/**").permitAll()
             .antMatchers("/swagger-resources/configuration/ui").permitAll()

@@ -10,7 +10,6 @@ import com.wizaord.money.service.Exception.NotAllowedException;
 import com.wizaord.money.service.dto.AccountDetailDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -31,11 +30,18 @@ public class UserAccountResource {
      */
     private final Logger log = LoggerFactory.getLogger(UserAccountResource.class);
 
-    @Autowired
     private AccountUserService accountUserService;
-
-    @Autowired
     private UserRepository userRepository;
+
+    /**
+     * Default constructor
+     * @param accountUserService
+     * @param userRepository
+     */
+    public UserAccountResource(AccountUserService accountUserService, UserRepository userRepository) {
+        this.accountUserService = accountUserService;
+        this.userRepository = userRepository;
+    }
 
     /**
      * Returns the user compteBancaire
@@ -47,7 +53,7 @@ public class UserAccountResource {
     public ResponseEntity<List<AccountDetailDTO>> getUserCompteBancaire() {
         return userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).map(user -> {
             List<AccountDetailDTO> lstDTO = accountUserService.getUserAccounts(user.getId());
-            return new ResponseEntity<List<AccountDetailDTO>>(lstDTO, HttpStatus.OK);
+            return new ResponseEntity<>(lstDTO, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED));
     }
 
@@ -57,24 +63,61 @@ public class UserAccountResource {
      * @param id : The account id
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/:id")
+    @DeleteMapping("/{id}")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long accountId) {
-        log.info("REST request to delete Account: {}", accountId);
+    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+        log.info("REST request to delete Account: {}", id);
         String userLogin = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userRepository.findOneByLogin(userLogin);
 
         if (user.isPresent()) {
             try {
-                this.accountUserService.deleteAccount(user.get().getId(), accountId);
+                this.accountUserService.deleteAccount(user.get().getId(), id);
                 return ResponseEntity.ok().build();
             } catch (NotAllowedException e) {
             }
-            return new ResponseEntity<Void>(HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
         } else {
-            return new ResponseEntity<Void>(HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
         }
+    }
+
+    @PutMapping("/{id}/reopen")
+    @Timed
+    @Secured(AuthoritiesConstants.USER)
+    public ResponseEntity<Void> reopenAccount(@PathVariable Long id) {
+        log.info("REST request to reopen Account: {}", id);
+        String userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userRepository.findOneByLogin(userLogin);
+
+        if (user.isPresent()) {
+            try {
+                this.accountUserService.changeAccountStatus(user.get().getId(), id, false);
+                return ResponseEntity.ok().build();
+            } catch (NotAllowedException e) {
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+
+    @PutMapping("/{id}/close")
+    @Timed
+    @Secured(AuthoritiesConstants.USER)
+    public ResponseEntity<Void> closeAccount(@PathVariable Long id) {
+        log.info("REST request to close Account: {}", id);
+        String userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userRepository.findOneByLogin(userLogin);
+
+        if (user.isPresent()) {
+            try {
+                this.accountUserService.changeAccountStatus(user.get().getId(), id, true);
+                return ResponseEntity.ok().build();
+            } catch (NotAllowedException e) {
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
 }

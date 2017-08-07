@@ -39,7 +39,7 @@ export class ComptebancaireListComponent implements OnInit {
 
     openAccount(compte: CompteBancaire) {
         this.compteBancaireSrv.reopenAccount(compte.id).subscribe((response) => {
-            this.accountsInactif.splice(this.accounts.indexOf(compte), 1);
+            this.accountsInactif.splice(this.accountsInactif.indexOf(compte), 1);
             this.accounts.push(compte);
             console.log('Ouverture du compte ' + compte.id);
         })
@@ -47,7 +47,7 @@ export class ComptebancaireListComponent implements OnInit {
 
     deleteAccount(compte: CompteBancaire) {
         this.compteBancaireSrv.deleteAccount(compte.id).subscribe((response) => {
-            this.accountsInactif.splice(this.accounts.indexOf(compte), 1);
+            this.accountsInactif.splice(this.accountsInactif.indexOf(compte), 1);
         })
     }
 }

@@ -14,4 +14,6 @@ import java.util.List;
 public interface CompteBancaireRepository extends JpaRepository<CompteBancaire,Long> {
 
     List<CompteBancaire> getAllByProprietaire(final Integer proprietaireId);
+
+    List<CompteBancaire> getAllByProprietaireAndIsDeletedFalse(final Integer proprietaireId);
 }
