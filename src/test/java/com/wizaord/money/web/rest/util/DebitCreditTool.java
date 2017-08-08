@@ -7,12 +7,12 @@ import java.time.Instant;
 
 public class DebitCreditTool {
 
-    private static final String DEFAULT_LIBELLE = "AAAAAAAAAA";
-    private static final Instant DEFAULT_DATE_ENREGISTREMENT = Instant.ofEpochMilli(0L);
-    private static final Boolean DEFAULT_IS_POINTE = false;
-    private static final Instant DEFAULT_DATE_POINTAGE = Instant.ofEpochMilli(0L);
-    private static final Float DEFAULT_MONTANT_TOTAL = 1F;
-    private static final String DEFAULT_LIBELLE_BANQUE = "AAAAAAAAAA";
+    public static final String DEFAULT_LIBELLE = "AAAAAAAAAA";
+    public static final Instant DEFAULT_DATE_ENREGISTREMENT = Instant.ofEpochMilli(0L);
+    public static final Boolean DEFAULT_IS_POINTE = false;
+    public static final Instant DEFAULT_DATE_POINTAGE = Instant.ofEpochMilli(0L);
+    public static final Float DEFAULT_MONTANT_TOTAL = 1F;
+    public static final String DEFAULT_LIBELLE_BANQUE = "AAAAAAAAAA";
 
 
     /**

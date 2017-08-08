@@ -70,7 +70,6 @@ public class UserDebitCreditResource {
 
         // 2 - get all debitCredits
         final List<DebitCreditDTO> debitsCredits = debitCreditUserService.getDebitCredit(debitCreditSearch);
-
         return new ResponseEntity<>(debitsCredits, HttpStatus.OK);
     }
 

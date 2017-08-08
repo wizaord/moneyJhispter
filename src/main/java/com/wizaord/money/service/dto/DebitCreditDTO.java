@@ -1,5 +1,7 @@
 package com.wizaord.money.service.dto;
 
+import com.wizaord.money.domain.DebitCredit;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,24 +14,30 @@ public class DebitCreditDTO {
     private boolean isPointe;
     private String libellePerso;
     private String libelleBanque;
-    private int compteId;
-    private long montantTotal;
+    private long compteId;
+    private float montantTotal;
     private List<DetailMontantDTO> detailMontantDTOS = new ArrayList<>();
-
-    public DebitCreditDTO(long id, Instant dateTransaction, Instant datePointage, boolean isPointe, String libellePerso, String libelleBanque, int compteId, long montantTotal) {
-        super();
-        this.id = id;
-        this.dateTransaction = dateTransaction;
-        this.datePointage = datePointage;
-        this.isPointe = isPointe;
-        this.libellePerso = libellePerso;
-        this.libelleBanque = libelleBanque;
-        this.compteId = compteId;
-        this.montantTotal = montantTotal;
-    }
 
     public DebitCreditDTO() {
         super();
+    }
+
+    public DebitCreditDTO(DebitCredit debitCredit) {
+        super();
+        this.id = debitCredit.getId();
+        this.dateTransaction = debitCredit.getDateEnregistrement();
+        this.datePointage = debitCredit.getDatePointage();
+        this.isPointe = debitCredit.isIsPointe();
+        this.libellePerso = debitCredit.getLibelle();
+        this.libelleBanque = debitCredit.getLibelleBanque();
+        this.compteId = debitCredit.getCompterattache().getId();
+        this.montantTotal = debitCredit.getMontantTotal();
+
+        debitCredit.getDetails().forEach((elt) -> {
+            DetailMontantDTO detailMontantDTO = new DetailMontantDTO(elt);
+            this.addDetailMontant(detailMontantDTO);
+        });
+
     }
 
     public void addDetailMontant(DetailMontantDTO detail) {
@@ -84,7 +92,7 @@ public class DebitCreditDTO {
         this.libelleBanque = libelleBanque;
     }
 
-    public int getCompteId() {
+    public long getCompteId() {
         return compteId;
     }
 
@@ -92,7 +100,7 @@ public class DebitCreditDTO {
         this.compteId = compteId;
     }
 
-    public long getMontantTotal() {
+    public float getMontantTotal() {
         return montantTotal;
     }
 

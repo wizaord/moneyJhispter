@@ -1,12 +1,15 @@
 package com.wizaord.money.web.rest;
 
 import com.wizaord.money.MoneyJhipsterApp;
+import com.wizaord.money.domain.CompteBancaire;
 import com.wizaord.money.domain.User;
 import com.wizaord.money.repository.CompteBancaireRepository;
+import com.wizaord.money.repository.DebitCreditRepository;
 import com.wizaord.money.repository.UserRepository;
 import com.wizaord.money.service.AccountUserService;
 import com.wizaord.money.service.DebitCreditUserService;
 import com.wizaord.money.service.dto.DebitCreditSearch;
+import com.wizaord.money.web.rest.util.DebitCreditTool;
 import com.wizaord.money.web.rest.util.UserTool;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -21,14 +24,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static com.wizaord.money.web.rest.util.CompteBancaireTool.createEntity;
+import static com.wizaord.money.web.rest.util.DebitCreditTool.DEFAULT_LIBELLE;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -41,6 +49,8 @@ public class UserDebitCreditResourceTest {
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
     @Autowired
     private CompteBancaireRepository compteBancaireRepository;
+    @Autowired
+    private DebitCreditRepository debitCreditRepository;
     @Autowired
     private AccountUserService accountUserService;
     @Autowired
@@ -66,10 +76,27 @@ public class UserDebitCreditResourceTest {
             .build();
     }
 
-    @Ignore
     @Test
+    @Transactional
     public void getDebitsCreditsAll() throws Exception {
-        fail("Not yet implemented");
+        //create account
+        CompteBancaire cb = compteBancaireRepository.saveAndFlush(createEntity(user.getId().intValue()));
+        //create 100 debit credit
+        for (int i = 0; i < 100; i++) {
+            debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
+        }
+
+        //set account 1 as criteria
+        DebitCreditSearch debitCreditSearch = new DebitCreditSearch();
+        debitCreditSearch.addCompteId(1);
+
+        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.*", hasSize(100)))
+            .andExpect(jsonPath("$.[?(@.id == 1)].libellePerso").value(hasItem(DEFAULT_LIBELLE.toString())));
     }
 
     @Ignore
@@ -99,7 +126,6 @@ public class UserDebitCreditResourceTest {
         restUserDebitCredit.perform(get("/api/users/debitcredit/")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
-            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest());
     }
 
@@ -116,7 +142,6 @@ public class UserDebitCreditResourceTest {
         restUserDebitCredit.perform(get("/api/users/debitcredit/")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
-            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isForbidden());
     }
 

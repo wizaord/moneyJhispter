@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,6 +26,7 @@ public class DebitCreditUserService {
     /**
      * Based on the criteria, returns the list of the debitCredits
      * All criteria could be added
+     *
      * @param debitCreditSearch
      * @return
      */
@@ -36,7 +38,12 @@ public class DebitCreditUserService {
         log.debug("Retrieve {} debitcredit", debitCredits.size());
 
         //apply criteroa
-
-        return null;
+        List<DebitCreditDTO> dtoList = null;
+        if (!debitCredits.isEmpty()) {
+            dtoList = debitCredits.stream()
+                .map(DebitCreditDTO::new)
+                .collect(Collectors.toList());
+        }
+        return dtoList;
     }
 }
