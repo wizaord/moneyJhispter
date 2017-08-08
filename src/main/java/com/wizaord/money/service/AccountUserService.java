@@ -76,6 +76,30 @@ public class AccountUserService {
     }
 
     /**
+     * Check that the userid is the owner of all accountIds passed in parameter
+     * @param userId
+     * @param accountIds
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public boolean isAccountsOwner(final Long userId, final List<Long> accountIds) {
+        if (accountIds != null) {
+            for(Long accountId : accountIds) {
+                try {
+                    Optional<CompteBancaire> accountOwner = isAccountOwner(userId, accountId);
+                    if(!accountOwner.isPresent()) {
+                        return false;
+                    }
+                } catch (NotAllowedException e) {
+                   return false;
+                }
+
+            }
+        }
+        return true;
+    }
+
+    /**
      * Delete the account from the user
      * If the account does not exist or if the user is not the account owner, an exception is raised
      */
