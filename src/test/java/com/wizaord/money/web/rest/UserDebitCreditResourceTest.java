@@ -5,6 +5,7 @@ import com.wizaord.money.domain.User;
 import com.wizaord.money.repository.CompteBancaireRepository;
 import com.wizaord.money.repository.UserRepository;
 import com.wizaord.money.service.AccountUserService;
+import com.wizaord.money.service.DebitCreditUserService;
 import com.wizaord.money.service.dto.DebitCreditSearch;
 import com.wizaord.money.web.rest.util.UserTool;
 import org.junit.Before;
@@ -42,6 +43,8 @@ public class UserDebitCreditResourceTest {
     private CompteBancaireRepository compteBancaireRepository;
     @Autowired
     private AccountUserService accountUserService;
+    @Autowired
+    private DebitCreditUserService debitCreditUserService;
 
     private MockMvc restUserDebitCredit;
     private User user;
@@ -56,7 +59,7 @@ public class UserDebitCreditResourceTest {
         when(userRepository.findOneByLogin(anyString())).thenReturn(Optional.of(user));
 
         //create useraccontRessource MVC Mock
-        UserDebitCreditResource userDebitCreditResource = new UserDebitCreditResource(userRepository, accountUserService);
+        UserDebitCreditResource userDebitCreditResource = new UserDebitCreditResource(userRepository, accountUserService, debitCreditUserService);
         this.restUserDebitCredit = MockMvcBuilders
             .standaloneSetup(userDebitCreditResource)
             .setMessageConverters(jacksonMessageConverter)

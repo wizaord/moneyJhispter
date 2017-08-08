@@ -1,5 +1,6 @@
 package com.wizaord.money.service.dto;
 
+import com.wizaord.money.domain.CompteBancaire;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,16 @@ public class DebitCreditSearch {
 
     public List<Long> getCompteIds() {
         return compteIds;
+    }
+
+    public List<CompteBancaire> getCompteBancaires() {
+        List<CompteBancaire> compteBancaires = new ArrayList<>();
+        this.compteIds.forEach((elt) -> {
+            CompteBancaire cb = new CompteBancaire();
+            cb.setId(elt.longValue());
+            compteBancaires.add(cb);
+        });
+        return compteBancaires;
     }
 
     public void setCompteIds(List<Long> compteIds) {

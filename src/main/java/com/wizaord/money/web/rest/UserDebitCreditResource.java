@@ -6,6 +6,7 @@ import com.wizaord.money.repository.UserRepository;
 import com.wizaord.money.security.AuthoritiesConstants;
 import com.wizaord.money.security.SecurityUtils;
 import com.wizaord.money.service.AccountUserService;
+import com.wizaord.money.service.DebitCreditUserService;
 import com.wizaord.money.service.dto.DebitCreditDTO;
 import com.wizaord.money.service.dto.DebitCreditSearch;
 import org.slf4j.Logger;
@@ -32,16 +33,19 @@ public class UserDebitCreditResource {
 
     private UserRepository userRepository;
     private AccountUserService accountUserService;
+    private DebitCreditUserService debitCreditUserService;
 
 
     /**
      * Default constructor
      * @param userRepository
      * @param accountUserService
+     * @param debitCreditUserService
      */
-    public UserDebitCreditResource(UserRepository userRepository, AccountUserService accountUserService) {
+    public UserDebitCreditResource(UserRepository userRepository, AccountUserService accountUserService, DebitCreditUserService debitCreditUserService) {
         this.userRepository = userRepository;
         this.accountUserService = accountUserService;
+        this.debitCreditUserService = debitCreditUserService;
     }
 
 
@@ -65,8 +69,9 @@ public class UserDebitCreditResource {
         }
 
         // 2 - get all debitCredits
+        final List<DebitCreditDTO> debitsCredits = debitCreditUserService.getDebitCredit(debitCreditSearch);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(debitsCredits, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
