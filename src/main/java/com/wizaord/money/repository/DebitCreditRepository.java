@@ -16,5 +16,5 @@ public interface DebitCreditRepository extends JpaRepository<DebitCredit,Long> {
 
     DebitCredit getFirstByComptebancaireByCompteRattacheOrderByDateEnregistrement(CompteBancaire cb);
 
-    List<DebitCredit> findAllByComptebancaireByCompteRattacheOrderByDateEnregistrement(List<CompteBancaire> cbs);
+    List<DebitCredit> findAllByComptebancaireByCompteRattacheInOrderByDateEnregistrement(List<CompteBancaire> cbs);
 }

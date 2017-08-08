@@ -4,6 +4,8 @@ import com.wizaord.money.domain.CompteBancaire;
 import com.wizaord.money.domain.DebitCredit;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class DebitCreditTool {
 
@@ -27,6 +29,21 @@ public class DebitCreditTool {
             .montantTotal(DEFAULT_MONTANT_TOTAL)
             .libelleBanque(DEFAULT_LIBELLE_BANQUE)
             .compterattache(compteBancaire);
+        return debitCredit;
+    }
+
+    /**
+     * Create a DebitCredit. Can specify the month
+     * @param compteBancaire
+     * @param month
+     * @return
+     */
+    public static DebitCredit createDebitCreditWithMonth(final CompteBancaire compteBancaire, final int year, final int month) {
+        DebitCredit debitCredit = createDebitCredit(compteBancaire);
+        LocalDateTime ldt = LocalDateTime.ofInstant(debitCredit.getDateEnregistrement(), ZoneOffset.UTC);
+        //change the month
+        LocalDateTime newLocalDateTime = LocalDateTime.of(year, month, 10, ldt.getHour(), ldt.getMinute());
+        debitCredit.setDateEnregistrement(newLocalDateTime.toInstant(ZoneOffset.UTC));
         return debitCredit;
     }
 }

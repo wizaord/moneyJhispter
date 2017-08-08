@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +35,22 @@ public class DebitCreditUserService {
     public List<DebitCreditDTO> getDebitCredit(final DebitCreditSearch debitCreditSearch) {
         //get from account
         log.debug("Get all debitCredit on accounts {}", debitCreditSearch.getCompteIds());
-        List<DebitCredit> debitCredits = debitCreditRepository.findAllByComptebancaireByCompteRattacheOrderByDateEnregistrement(debitCreditSearch.getCompteBancaires());
+        List<DebitCredit> debitCredits = debitCreditRepository.findAllByComptebancaireByCompteRattacheInOrderByDateEnregistrement(debitCreditSearch.getCompteBancaires());
         log.debug("Retrieve {} debitcredit", debitCredits.size());
+
+        //remove before begin date
+        if (debitCreditSearch.getBeginDate() != null) {
+            debitCredits = debitCredits.parallelStream()
+                .filter((debitCredit -> debitCredit.getDateEnregistrement().isAfter(debitCreditSearch.getBeginDate().atStartOfDay().toInstant(ZoneOffset.UTC))))
+                .collect(Collectors.toList());
+        }
+
+        //remove after end date
+        if (debitCreditSearch.getEndDate() != null) {
+            debitCredits = debitCredits.parallelStream()
+                .filter((debitCredit -> debitCredit.getDateEnregistrement().isBefore(debitCreditSearch.getEndDate().atStartOfDay().toInstant(ZoneOffset.UTC))))
+                .collect(Collectors.toList());
+        }
 
         //apply criteroa
         List<DebitCreditDTO> dtoList = null;

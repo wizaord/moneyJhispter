@@ -76,7 +76,7 @@ public class UserAccountResourceTest {
     @Transactional
     public void getUserCompteBancaireWithoutDebitCreditTest() throws Exception {
         // Initialize the database
-        CompteBancaire entity = createEntity(user.getId().intValue());
+        CompteBancaire entity = createCompteBancaire(user.getId().intValue());
         entity = compteBancaireRepository.saveAndFlush(entity);
 
         // Get all the compteBancaireList
@@ -99,7 +99,7 @@ public class UserAccountResourceTest {
     @Transactional
     public void getUserCompteBancaireWithDebitCreditTest() throws Exception {
         // Initialize the database
-        CompteBancaire cb = createEntity(user.getId().intValue());
+        CompteBancaire cb = createCompteBancaire(user.getId().intValue());
         cb = compteBancaireRepository.saveAndFlush(cb);
         //added debit credit
         debitCreditRepository.saveAndFlush(createDebitCredit(cb));
@@ -125,9 +125,9 @@ public class UserAccountResourceTest {
     @Transactional
     public void getUserCompteBancairesTest() throws Exception {
         // Initialize the database
-        CompteBancaire entity = createEntity("libelle1", user.getId().intValue());
+        CompteBancaire entity = createCompteBancaire("libelle1", user.getId().intValue());
         entity = compteBancaireRepository.saveAndFlush(entity);
-        CompteBancaire entity2 = createEntity("libelle2", user.getId().intValue());
+        CompteBancaire entity2 = createCompteBancaire("libelle2", user.getId().intValue());
         entity2 = compteBancaireRepository.saveAndFlush(entity2);
 
         // Get all the compteBancaireList
@@ -142,7 +142,7 @@ public class UserAccountResourceTest {
     @Transactional
     public void deleteAccountTest() throws Exception {
         // Initialize the database
-        CompteBancaire cb = createEntity(user.getId().intValue());
+        CompteBancaire cb = createCompteBancaire(user.getId().intValue());
         cb = compteBancaireRepository.saveAndFlush(cb);
         assertThat(cb.isIsDeleted()).isFalse();
 
@@ -160,7 +160,7 @@ public class UserAccountResourceTest {
     @Transactional
     public void reopenAccountTest() throws Exception {
         // Initialize the database
-        CompteBancaire cb = createEntity(user.getId().intValue());
+        CompteBancaire cb = createCompteBancaire(user.getId().intValue());
         cb.setIsClos(true);
         cb = compteBancaireRepository.saveAndFlush(cb);
         assertThat(cb.isIsClos()).isTrue();
@@ -179,7 +179,7 @@ public class UserAccountResourceTest {
     @Transactional
     public void closeAccountTest() throws Exception {
         // Initialize the database
-        CompteBancaire cb = createEntity(user.getId().intValue());
+        CompteBancaire cb = createCompteBancaire(user.getId().intValue());
         cb = compteBancaireRepository.saveAndFlush(cb);
         assertThat(cb.isIsClos()).isFalse();
 

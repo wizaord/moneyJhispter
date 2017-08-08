@@ -22,7 +22,7 @@ public class CompteBancaireTool {
      * Create an entity for this test.
      *
      */
-    public static CompteBancaire createEntity(final int userId) {
+    public static CompteBancaire createCompteBancaire(final int userId) {
         CompteBancaire compteBancaire = new CompteBancaire()
             .libelle(DEFAULT_LIBELLE)
             .numeroCompte(DEFAULT_NUMERO_COMPTE)
@@ -41,8 +41,8 @@ public class CompteBancaireTool {
      * @param userId
      * @return
      */
-    public static CompteBancaire createEntity(final String libelle, final int userId) {
-        CompteBancaire cb = createEntity(userId);
+    public static CompteBancaire createCompteBancaire(final String libelle, final int userId) {
+        CompteBancaire cb = createCompteBancaire(userId);
         cb.setLibelle(libelle);
         return cb;
     }

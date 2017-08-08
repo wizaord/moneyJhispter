@@ -4,7 +4,7 @@ import com.wizaord.money.domain.CompteBancaire;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +13,8 @@ public class DebitCreditSearch {
     @NotEmpty
     private List<Long> compteIds = new ArrayList<>();
 
-    private Instant beginMonth;
-    private Instant endMonth;
+    private LocalDate beginDate;
+    private LocalDate endDate;
     private String libelleMatch;
     private String categorieName;
 
@@ -40,20 +40,20 @@ public class DebitCreditSearch {
         this.compteIds = compteIds;
     }
 
-    public Instant getBeginMonth() {
-        return beginMonth;
+    public LocalDate getBeginDate() {
+        return beginDate;
     }
 
-    public void setBeginMonth(Instant beginMonth) {
-        this.beginMonth = beginMonth;
+    public void setBeginDate(LocalDate beginDate) {
+        this.beginDate = beginDate;
     }
 
-    public Instant getEndMonth() {
-        return endMonth;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setEndMonth(Instant endMonth) {
-        this.endMonth = endMonth;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public String getLibelleMatch() {
