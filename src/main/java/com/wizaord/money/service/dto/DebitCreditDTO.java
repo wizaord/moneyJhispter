@@ -1,14 +1,16 @@
 package com.wizaord.money.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wizaord.money.domain.DebitCredit;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DebitCreditDTO {
 
-    private long id;
+    private Long id;
     private Instant dateTransaction;
     private Instant datePointage;
     private boolean isPointe;
@@ -16,7 +18,6 @@ public class DebitCreditDTO {
     private String libelleBanque;
     private long compteId;
     private float montantTotal;
-
 
     private List<DetailMontantDTO> detailMontantDTOS = new ArrayList<>();
 
@@ -46,11 +47,11 @@ public class DebitCreditDTO {
         this.detailMontantDTOS.add(detail);
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -94,11 +95,11 @@ public class DebitCreditDTO {
         this.libelleBanque = libelleBanque;
     }
 
-    public long getCompteId() {
+    public Long getCompteId() {
         return compteId;
     }
 
-    public void setCompteId(int compteId) {
+    public void setCompteId(Long compteId) {
         this.compteId = compteId;
     }
 
@@ -106,11 +107,36 @@ public class DebitCreditDTO {
         return montantTotal;
     }
 
-    public void setMontantTotal(long montantTotal) {
+    public void setMontantTotal(float montantTotal) {
         this.montantTotal = montantTotal;
     }
 
     public List<DetailMontantDTO> getDetailMontantDTOS() {
         return detailMontantDTOS;
+    }
+
+    /**
+     * Convert DTO in DebitCredit bean.
+     * The followings parameters are not set :
+     *  - DebitCredit#setCompteRattache
+     * @return
+     */
+    @JsonIgnore
+    public DebitCredit getDebitCredit() {
+        DebitCredit db = new DebitCredit();
+        db.setId(this.id);
+        db.setLibelle(this.libellePerso);
+        db.setLibelleBanque(this.libelleBanque);
+        db.setDateEnregistrement(this.dateTransaction);
+        db.setDatePointage(this.datePointage);
+        db.setIsPointe(this.isPointe);
+        db.setMontantTotal(this.montantTotal);
+        db.setCompteRattache(null);
+
+        db.setDetails(this.detailMontantDTOS.parallelStream()
+            .map(detailMontantDTO -> detailMontantDTO.getDetailMontant())
+            .collect(Collectors.toSet()));
+
+        return db;
     }
 }

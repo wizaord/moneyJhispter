@@ -3,8 +3,10 @@ package com.wizaord.money.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -38,9 +40,12 @@ public class DebitCredit implements Serializable {
     private Instant datePointage;
 
     @Column(name = "montantTotal")
+    @NotNull
     private Float montantTotal;
 
     @Column(name = "libelleBanque")
+    @NotEmpty
+    @NotNull
     private String libelleBanque;
 
     @OneToMany(mappedBy = "debitCreditAssocie", cascade = CascadeType.PERSIST)
@@ -50,6 +55,7 @@ public class DebitCredit implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "compteRattache", referencedColumnName = "id", nullable = false)
+    @NotNull
     private CompteBancaire comptebancaireByCompteRattache;
 
     public Long getId() {

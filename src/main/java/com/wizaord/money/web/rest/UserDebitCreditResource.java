@@ -1,21 +1,25 @@
 package com.wizaord.money.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.wizaord.money.domain.CompteBancaire;
 import com.wizaord.money.domain.User;
 import com.wizaord.money.repository.UserRepository;
 import com.wizaord.money.security.AuthoritiesConstants;
 import com.wizaord.money.security.SecurityUtils;
 import com.wizaord.money.service.AccountUserService;
 import com.wizaord.money.service.DebitCreditUserService;
+import com.wizaord.money.service.Exception.NotAllowedException;
 import com.wizaord.money.service.dto.DebitCreditDTO;
 import com.wizaord.money.service.dto.DebitCreditSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,16 +107,28 @@ public class UserDebitCreditResource {
 
     @PostMapping("/")
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity<Void> createDebitCredit(@RequestBody DebitCreditDTO debitCreditDTO) {
+    public ResponseEntity<DebitCreditDTO> createDebitCredit(@RequestBody DebitCreditDTO debitCreditDTO) {
         Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
         if (! user.isPresent()) {
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
         }
-        // 1 - check that the user is the owner of the account where debitCredit will be create
+        // 1 - check that the user is the owner of all accounts
+        try {
+            final Optional<CompteBancaire> accountOwner = accountUserService.isAccountOwner(user.get().getId(), debitCreditDTO.getCompteId());
+            if ( ! accountOwner.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        } catch (NotAllowedException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
-        // 2 - update debitCredit
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        // 2 - create debitCredit
+        try {
+            final DebitCreditDTO debitCredit = debitCreditUserService.createDebitCredit(debitCreditDTO);
+            return new ResponseEntity<>(debitCredit, HttpStatus.OK);
+        } catch (ConstraintViolationException | DataIntegrityViolationException e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
 }

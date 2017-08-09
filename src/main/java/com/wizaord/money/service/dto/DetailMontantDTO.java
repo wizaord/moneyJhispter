@@ -1,25 +1,29 @@
 package com.wizaord.money.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wizaord.money.domain.Categorie;
 import com.wizaord.money.domain.DetailMontant;
 
 public class DetailMontantDTO {
 
-    private long id;
+    private Long id;
     private String categorieName;
     private long categorieId;
     private double montant;
     private boolean isVirementInterne;
+    private Integer virementInterneCompteId;
 
     public DetailMontantDTO() {
         super();
     }
 
-    public DetailMontantDTO(long id, String categorieName, long categorieId, double montant, boolean isVirementInterne) {
+    public DetailMontantDTO(long id, String categorieName, long categorieId, double montant, boolean isVirementInterne, Integer virementInterneCompteId) {
         this.id = id;
         this.categorieName = categorieName;
         this.categorieId = categorieId;
         this.montant = montant;
         this.isVirementInterne = isVirementInterne;
+        this.virementInterneCompteId = virementInterneCompteId;
     }
 
     public DetailMontantDTO(DetailMontant detailMontant) {
@@ -30,13 +34,14 @@ public class DetailMontantDTO {
         }
         this.montant = detailMontant.getMontant();
         this.isVirementInterne = (detailMontant.getVirementInterneCompteId() != null) ? true : false;
+        this.virementInterneCompteId = detailMontant.getVirementInterneCompteId();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,4 +77,28 @@ public class DetailMontantDTO {
         isVirementInterne = virementInterne;
     }
 
+    public Integer getVirementInterneCompteId() {
+        return virementInterneCompteId;
+    }
+
+    public void setVirementInterneCompteId(Integer virementInterneCompteId) {
+        this.virementInterneCompteId = virementInterneCompteId;
+    }
+
+    /**
+     * Convert a DetailMontantDTO in DetailMontant
+     * @return
+     */
+    @JsonIgnore
+    public DetailMontant getDetailMontant() {
+        DetailMontant dm = new DetailMontant();
+        dm.setId(this.id);
+        dm.setMontant(this.montant);
+        dm.setVirementInterneCompteId(this.virementInterneCompteId);
+        Categorie c = new Categorie();
+        c.setId(this.categorieId);
+        dm.setCategorie(c);
+
+        return dm;
+    }
 }

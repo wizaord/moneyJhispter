@@ -4,6 +4,8 @@ import com.wizaord.money.domain.Categorie;
 import com.wizaord.money.domain.CompteBancaire;
 import com.wizaord.money.domain.DebitCredit;
 import com.wizaord.money.domain.DetailMontant;
+import com.wizaord.money.service.dto.DebitCreditDTO;
+import com.wizaord.money.service.dto.DetailMontantDTO;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,7 +18,7 @@ public class DebitCreditTool {
     public static final Boolean DEFAULT_IS_POINTE = false;
     public static final Instant DEFAULT_DATE_POINTAGE = Instant.ofEpochMilli(0L);
     public static final Float DEFAULT_MONTANT_TOTAL = 1F;
-    public static final String DEFAULT_LIBELLE_BANQUE = "AAAAAAAAAA";
+    public static final String DEFAULT_LIBELLE_BANQUE = "BANQUELIBELLE";
 
     public static final Double DEFAULT_MONTANT = 1D;
 
@@ -75,6 +77,28 @@ public class DebitCreditTool {
             .categorie(c)
             .virementInterneCompteId(null);
         return detailMontant;
+    }
+
+    public static DebitCreditDTO createDebitCreditDTO(final CompteBancaire cb) {
+        DebitCreditDTO debitCreditDTO = new DebitCreditDTO();
+        debitCreditDTO.setDatePointage(null);
+        debitCreditDTO.setDateTransaction(Instant.now());
+        debitCreditDTO.setCompteId(cb.getId());
+        debitCreditDTO.setLibelleBanque(DEFAULT_LIBELLE_BANQUE);
+        debitCreditDTO.setLibellePerso(DEFAULT_LIBELLE);
+        debitCreditDTO.setMontantTotal(DEFAULT_MONTANT_TOTAL);
+        debitCreditDTO.setPointe(false);
+        debitCreditDTO.setId(null);
+        return debitCreditDTO;
+    }
+
+    public static DetailMontantDTO createDetailMontantDTOWithoutCategorie() {
+        DetailMontantDTO dm = new DetailMontantDTO();
+        dm.setId(null);
+        dm.setMontant(DEFAULT_MONTANT_TOTAL);
+        dm.setVirementInterne(false);
+        dm.setVirementInterneCompteId(null);
+        return dm;
     }
 
 

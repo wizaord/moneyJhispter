@@ -11,7 +11,9 @@ import com.wizaord.money.repository.DebitCreditRepository;
 import com.wizaord.money.repository.UserRepository;
 import com.wizaord.money.service.AccountUserService;
 import com.wizaord.money.service.DebitCreditUserService;
+import com.wizaord.money.service.dto.DebitCreditDTO;
 import com.wizaord.money.service.dto.DebitCreditSearch;
+import com.wizaord.money.service.dto.DetailMontantDTO;
 import com.wizaord.money.web.rest.util.CategorieTool;
 import com.wizaord.money.web.rest.util.CompteBancaireTool;
 import com.wizaord.money.web.rest.util.DebitCreditTool;
@@ -27,19 +29,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static com.wizaord.money.web.rest.util.DebitCreditTool.DEFAULT_LIBELLE;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -93,14 +95,15 @@ public class UserDebitCreditResourceTest {
 
         //set account 1 as criteria
         DebitCreditSearch debitCreditSearch = new DebitCreditSearch();
-        debitCreditSearch.addCompteId(1);
+        debitCreditSearch.addCompteId(cb.getId());
 
         restUserDebitCredit.perform(get("/api/users/debitcredit/")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
+//            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.*", hasSize(100)))
-            .andExpect(jsonPath("$.[?(@.id == 1)].libellePerso").value(hasItem(DEFAULT_LIBELLE.toString())));
+            .andExpect(jsonPath("$.*", hasSize(100)));
+//            .andExpect(jsonPath("$.[?(@.id == 1)].libellePerso").value(hasItem(DEFAULT_LIBELLE.toString())));
     }
 
     @Test
@@ -297,28 +300,106 @@ public class UserDebitCreditResourceTest {
         fail("Not yet implemented");
     }
 
-    @Ignore
     @Test
     public void createDebitCredit() throws Exception {
-        fail("Not yet implemented");
+        //create account
+        CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+
+        final DebitCreditDTO debitCreditDTO = DebitCreditTool.createDebitCreditDTO(cb);
+        debitCreditDTO.setCompteId(cb.getId());
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.dateTransaction").isNotEmpty())
+            .andExpect(jsonPath("$.libellePerso").value(DebitCreditTool.DEFAULT_LIBELLE))
+            .andExpect(jsonPath("$.libelleBanque").value(DebitCreditTool.DEFAULT_LIBELLE_BANQUE))
+            .andExpect(jsonPath("$.compteId").value(cb.getId()))
+            .andExpect(jsonPath("$.montantTotal").value(DebitCreditTool.DEFAULT_MONTANT_TOTAL))
+            .andExpect(jsonPath("$.pointe").value(false))
+            .andExpect(jsonPath("$.datePointage").isEmpty());
     }
 
-    @Ignore
     @Test
-    public void createDebitCreditNotConnected() throws Exception {
-        fail("Not yet implemented");
+    public void createDebitCreditWithDetailMontant() throws Exception {
+        //create account
+        CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+        final Categorie categorie = categorieRepository.saveAndFlush(CategorieTool.createCategorieWithName("CATCREATE"));
+
+        final DetailMontantDTO detailMontantDTOWithoutCategorie = DebitCreditTool.createDetailMontantDTOWithoutCategorie();
+        detailMontantDTOWithoutCategorie.setCategorieId(categorie.getId());
+
+        final DebitCreditDTO debitCreditDTO = DebitCreditTool.createDebitCreditDTO(cb);
+        debitCreditDTO.setCompteId(cb.getId());
+        debitCreditDTO.addDetailMontant(detailMontantDTOWithoutCategorie);
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.dateTransaction").isNotEmpty())
+            .andExpect(jsonPath("$.libellePerso").value(DebitCreditTool.DEFAULT_LIBELLE))
+            .andExpect(jsonPath("$.libelleBanque").value(DebitCreditTool.DEFAULT_LIBELLE_BANQUE))
+            .andExpect(jsonPath("$.compteId").value(cb.getId()))
+            .andExpect(jsonPath("$.montantTotal").value(DebitCreditTool.DEFAULT_MONTANT_TOTAL))
+            .andExpect(jsonPath("$.pointe").value(false))
+            .andExpect(jsonPath("$.datePointage").isEmpty());
     }
 
-    @Ignore
     @Test
-    public void createDebitCreditNotAccountDestinationOwner() throws Exception {
-        fail("Not yet implemented");
+    public void createDebitCreditNotAllowed() throws Exception {
+        //create account
+        CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+
+        final DebitCreditDTO debitCreditDTO = DebitCreditTool.createDebitCreditDTO(cb);
+        debitCreditDTO.setCompteId(100L);
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+//            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isForbidden());
     }
 
-    @Ignore
     @Test
     public void createDebitCreditMissingMandatoryParam() throws Exception {
-        fail("Not yet implemented");
+        //create account
+        CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+
+        final DebitCreditDTO debitCreditDTO = DebitCreditTool.createDebitCreditDTO(cb);
+        debitCreditDTO.setLibelleBanque(null);
+        debitCreditDTO.setCompteId(cb.getId());
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isExpectationFailed());
+    }
+
+
+    @Test
+    public void createDebitCreditCategoryDoesNotExist() throws Exception {
+        //create account
+        CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+
+        final DetailMontantDTO detailMontantDTOWithoutCategorie = DebitCreditTool.createDetailMontantDTOWithoutCategorie();
+        detailMontantDTOWithoutCategorie.setCategorieId(123456);
+
+        final DebitCreditDTO debitCreditDTO = DebitCreditTool.createDebitCreditDTO(cb);
+        debitCreditDTO.setCompteId(cb.getId());
+        debitCreditDTO.addDetailMontant(detailMontantDTOWithoutCategorie);
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+//            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isExpectationFailed());
     }
 
 }
