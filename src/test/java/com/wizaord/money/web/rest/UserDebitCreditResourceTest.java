@@ -1,14 +1,18 @@
 package com.wizaord.money.web.rest;
 
 import com.wizaord.money.MoneyJhipsterApp;
+import com.wizaord.money.domain.Categorie;
 import com.wizaord.money.domain.CompteBancaire;
+import com.wizaord.money.domain.DebitCredit;
 import com.wizaord.money.domain.User;
+import com.wizaord.money.repository.CategorieRepository;
 import com.wizaord.money.repository.CompteBancaireRepository;
 import com.wizaord.money.repository.DebitCreditRepository;
 import com.wizaord.money.repository.UserRepository;
 import com.wizaord.money.service.AccountUserService;
 import com.wizaord.money.service.DebitCreditUserService;
 import com.wizaord.money.service.dto.DebitCreditSearch;
+import com.wizaord.money.web.rest.util.CategorieTool;
 import com.wizaord.money.web.rest.util.CompteBancaireTool;
 import com.wizaord.money.web.rest.util.DebitCreditTool;
 import com.wizaord.money.web.rest.util.UserTool;
@@ -52,6 +56,8 @@ public class UserDebitCreditResourceTest {
     private DebitCreditRepository debitCreditRepository;
     @Autowired
     private AccountUserService accountUserService;
+    @Autowired
+    private CategorieRepository categorieRepository;
     @Autowired
     private DebitCreditUserService debitCreditUserService;
 
@@ -189,22 +195,70 @@ public class UserDebitCreditResourceTest {
             .andExpect(status().isForbidden());
     }
 
-    @Ignore
     @Test
     public void getDebitsCreditsNotConnected() throws Exception {
-        fail("Not yet implemented");
+        when(userRepository.findOneByLogin(anyString())).thenReturn(Optional.empty());
+
+        DebitCreditSearch debitCreditSearch = new DebitCreditSearch();
+        debitCreditSearch.setLibelleMatch("plop");
+
+        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
+            .andExpect(status().isMethodNotAllowed());
     }
 
-    @Ignore
     @Test
     public void getDebitsCreditsCriteriaOnName() throws Exception {
-        fail("Not yet implemented");
+        //create account
+        CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+        //create 100 debit credit
+        for (int i = 0; i < 100; i++) {
+            debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCreditWithLibelle(cb, "PLOP" + i));
+        }
+
+
+        DebitCreditSearch debitCreditSearch = new DebitCreditSearch();
+        debitCreditSearch.addCompteId(cb.getId());
+        debitCreditSearch.setLibelleMatch("P1");
+
+        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.*", hasSize(11)));
     }
 
-    @Ignore
     @Test
     public void getDebitsCreditsCriteriaOnCategorie() throws Exception {
-        fail("Not yet implemented");
+        //create account
+        CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+
+        //create 3 categories
+        final Categorie[] catArray = new Categorie[3];
+        for (int i = 0 ; i < 3; i++) {
+            catArray[i] = categorieRepository.saveAndFlush(CategorieTool.createCategorieWithName("CAT" + i));
+        }
+
+        //create 100 debit credit
+        for (int i = 0; i < 100; i++) {
+            //create with detail Montant
+            final DebitCredit debitCredit = DebitCreditTool.createDebitCredit(cb);
+            debitCredit.addDetails(DebitCreditTool.createDetailMontantWithCategorie(catArray[i % 3]));
+
+            debitCreditRepository.saveAndFlush(debitCredit);
+        }
+
+        DebitCreditSearch debitCreditSearch = new DebitCreditSearch();
+        debitCreditSearch.addCompteId(cb.getId());
+        debitCreditSearch.setCategorieName(catArray[0].getLibelle());
+
+        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
+//            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.*", hasSize(34)));
     }
 
     @Ignore

@@ -16,6 +16,8 @@ public class DebitCreditDTO {
     private String libelleBanque;
     private long compteId;
     private float montantTotal;
+
+
     private List<DetailMontantDTO> detailMontantDTOS = new ArrayList<>();
 
     public DebitCreditDTO() {
@@ -108,4 +110,7 @@ public class DebitCreditDTO {
         this.montantTotal = montantTotal;
     }
 
+    public List<DetailMontantDTO> getDetailMontantDTOS() {
+        return detailMontantDTOS;
+    }
 }

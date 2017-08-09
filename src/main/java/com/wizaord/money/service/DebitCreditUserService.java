@@ -52,6 +52,25 @@ public class DebitCreditUserService {
                 .collect(Collectors.toList());
         }
 
+        //remove on libelle match
+        if (debitCreditSearch.getLibelleMatch() != null && debitCreditSearch.getLibelleMatch().length() != 0) {
+            debitCredits = debitCredits.parallelStream()
+                .filter(debitCredit -> debitCredit.getLibelle().matches(".*" + debitCreditSearch.getLibelleMatch() + ".*"))
+                .collect(Collectors.toList());
+        }
+
+        //remove by categorie
+        if (debitCreditSearch.getCategorieName() != null) {
+            debitCredits = debitCredits.parallelStream()
+                .filter(debitCredit -> {
+                    long nbMatchElt = debitCredit.getDetails().parallelStream()
+                        .filter(detailMontant -> detailMontant.getCategorie().getLibelle().matches(".*" + debitCreditSearch.getCategorieName() + ".*"))
+                        .count();
+                    return nbMatchElt != 0;
+                })
+                .collect(Collectors.toList());
+        }
+
         //apply criteroa
         List<DebitCreditDTO> dtoList = null;
         if (!debitCredits.isEmpty()) {

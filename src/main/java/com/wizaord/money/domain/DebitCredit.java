@@ -8,8 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DebitCredit.
@@ -43,7 +43,7 @@ public class DebitCredit implements Serializable {
     @Column(name = "libelleBanque")
     private String libelleBanque;
 
-    @OneToMany(mappedBy = "debitCreditAssocie")
+    @OneToMany(mappedBy = "debitCreditAssocie", cascade = CascadeType.PERSIST)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DetailMontant> details = new HashSet<>();
