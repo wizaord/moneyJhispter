@@ -42,6 +42,7 @@ public class UserDebitCreditResource {
 
     /**
      * Default constructor
+     *
      * @param userRepository
      * @param accountUserService
      * @param debitCreditUserService
@@ -59,7 +60,7 @@ public class UserDebitCreditResource {
     public ResponseEntity<List<DebitCreditDTO>> getDebitsCredits(@RequestBody DebitCreditSearch debitCreditSearch) {
         Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
         //if the user is not authenticated
-        if (! user.isPresent()) {
+        if (!user.isPresent()) {
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
         }
         //if no account has been set in the post request
@@ -81,44 +82,57 @@ public class UserDebitCreditResource {
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<Void> deleteDebitCredit(@PathVariable Long id) {
         Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        if (! user.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+        if (!user.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        // 1 - check that the user is the owner of the debitCredit
+        // 1 - get the debitCredit
+        final Optional<Long> accountIdFromDebitCredit = debitCreditUserService.getAccountIdFromDebitCredit(id);
+        if (!accountIdFromDebitCredit.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        // 2 - check that the user is the owner of the debitCredit
+        if (!isUserOwner(user.get().getId(), accountIdFromDebitCredit.get()))
+        {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
 
         // 2 - delete the debit credit
-
+        debitCreditUserService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity<Void> updateDebitCredit(@PathVariable Long id, @RequestBody DebitCreditDTO debitCreditDTO) {
+    public ResponseEntity<DebitCreditDTO> updateDebitCredit(@PathVariable Long id, @RequestBody DebitCreditDTO debitCreditDTO) {
         Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        if (! user.isPresent()) {
+        if (!user.isPresent()) {
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
         }
-        // 1 - check that the user is the owner of the debitCredit
+        // 1 - check that the user is the owner of all accounts
+        if (!isUserOwner(user.get().getId(), debitCreditDTO.getCompteId())) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        //make some controle
+        if(!debitCreditUserService.isDebitCreditValid(debitCreditDTO)) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
 
         // 2 - update debitCredit
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        debitCreditDTO = debitCreditUserService.update(debitCreditDTO);
+        return new ResponseEntity<>(debitCreditDTO, HttpStatus.OK);
     }
 
     @PostMapping("/")
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<DebitCreditDTO> createDebitCredit(@RequestBody DebitCreditDTO debitCreditDTO) {
         Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        if (! user.isPresent()) {
+        if (!user.isPresent()) {
             return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
         }
         // 1 - check that the user is the owner of all accounts
-        try {
-            final Optional<CompteBancaire> accountOwner = accountUserService.isAccountOwner(user.get().getId(), debitCreditDTO.getCompteId());
-            if ( ! accountOwner.isPresent()) {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
-        } catch (NotAllowedException e) {
+        if (!isUserOwner(user.get().getId(), debitCreditDTO.getCompteId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -129,6 +143,26 @@ public class UserDebitCreditResource {
         } catch (ConstraintViolationException | DataIntegrityViolationException e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
+    }
+
+
+    /**
+     * Check that the userId is the owner of the compteId
+     *
+     * @param userId
+     * @param compteId
+     * @return
+     */
+    private boolean isUserOwner(final long userId, final long compteId) {
+        try {
+            final Optional<CompteBancaire> accountOwner = accountUserService.isAccountOwner(userId, compteId);
+            if (!accountOwner.isPresent()) {
+                return false;
+            }
+        } catch (NotAllowedException e) {
+            return false;
+        }
+        return true;
     }
 
 }

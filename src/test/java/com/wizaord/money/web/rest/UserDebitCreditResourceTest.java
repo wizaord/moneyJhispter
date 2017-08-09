@@ -36,12 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -264,22 +264,39 @@ public class UserDebitCreditResourceTest {
             .andExpect(jsonPath("$.*", hasSize(34)));
     }
 
-    @Ignore
     @Test
     public void deleteDebitCredit() throws Exception {
-        fail("Not yet implemented");
+        final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+        final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
+
+        restUserDebitCredit.perform(delete("/api/users/debitcredit/" + debitCredit.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+        final DebitCredit debitCreditFromDatabase = debitCreditRepository.findOne(debitCredit.getId());
+        assertThat(debitCreditFromDatabase).isNull();
     }
 
-    @Ignore
     @Test
     public void deleteDebitCreditNotExist() throws Exception {
-        fail("Not yet implemented");
+        restUserDebitCredit.perform(delete("/api/users/debitcredit/1234567")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8))
+//            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk());
     }
 
-    @Ignore
     @Test
     public void deleteDebitCreditNotAllow() throws Exception {
-        fail("Not yet implemented");
+        final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(2));
+        final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
+
+
+        restUserDebitCredit.perform(delete("/api/users/debitcredit/" + debitCredit.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+        final DebitCredit debitCreditFromDatabase = debitCreditRepository.getOne(debitCredit.getId());
+        assertThat(debitCreditFromDatabase).isNotNull();
     }
 
     @Ignore

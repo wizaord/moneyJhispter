@@ -2,6 +2,7 @@ package com.wizaord.money.service;
 
 import com.codahale.metrics.annotation.Timed;
 import com.wizaord.money.domain.Categorie;
+import com.wizaord.money.domain.CompteBancaire;
 import com.wizaord.money.domain.DebitCredit;
 import com.wizaord.money.repository.CategorieRepository;
 import com.wizaord.money.repository.CompteBancaireRepository;
@@ -14,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +33,8 @@ public class DebitCreditUserService {
     private CategorieRepository categorieRepository;
     @Autowired
     private CompteBancaireRepository compteBancaireRepository;
+    @Autowired
+    private EntityManager em;
 
     /**
      * Based on the criteria, returns the list of the debitCredits
@@ -113,5 +118,70 @@ public class DebitCreditUserService {
         //persist the object
         final DebitCredit debitCreditUpdated = debitCreditRepository.saveAndFlush(debitCredit);
         return new DebitCreditDTO(debitCreditUpdated);
+    }
+
+
+    /**
+     * Return the accountId for a debitCredit.
+     * If the debitCredit does not exist, this function will return an optional null value.
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public Optional<Long> getAccountIdFromDebitCredit(final long debitCreditId) {
+        final DebitCredit debitCredit = debitCreditRepository.findOne(debitCreditId);
+        if (debitCredit != null) {
+            return Optional.of(debitCredit.getCompterattache().getId());
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * This function remove the debitCredit
+     * @param id
+     */
+    public void delete(Long id) {
+        debitCreditRepository.delete(id);
+    }
+
+    /**
+     * Check that the DTO is valid with the database object instance.
+     * Some parameter must not change
+     * @param debitCreditDTO
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public boolean isDebitCreditValid(DebitCreditDTO debitCreditDTO) {
+        if (debitCreditDTO == null || debitCreditDTO.getId() == null) {
+            return false;
+        }
+
+        final DebitCredit one = debitCreditRepository.findOne(debitCreditDTO.getId());
+        if (one == null) {
+            return false;
+        }
+
+        //check the same account
+        if (one.getCompterattache().getId() != debitCreditDTO.getCompteId()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Update a specific debitCredit with some new value
+     * @param debitCreditDTO
+     * @return
+     */
+    public DebitCreditDTO update(DebitCreditDTO debitCreditDTO) {
+        final DebitCredit debitCredit = debitCreditDTO.getDebitCredit();
+        //set the account
+        final CompteBancaire compteRattache = compteBancaireRepository.getOne(debitCreditDTO.getCompteId());
+        debitCredit.setCompteRattache(compteRattache);
+
+        //refresh with the persistence manager
+        em.refresh(debitCredit);
+
+        //commit modification
+        return new DebitCreditDTO(debitCreditRepository.saveAndFlush(debitCredit));
     }
 }
