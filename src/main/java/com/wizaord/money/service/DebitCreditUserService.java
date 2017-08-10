@@ -200,9 +200,8 @@ public class DebitCreditUserService {
         debitCreditDTO.getDetailMontantDTOS().parallelStream()
             .filter(detailMontantDTO -> detailMontantDTO.getId() != null)
             .forEach(detailMontantDTO -> {
-                debitCreditFromDB.getDetails().stream()
-                    .filter(detailMontant -> detailMontant.getId() == debitCreditDTO.getId())   // get only detailMontant to update
-                    .map(detailMontant -> {
+                for(DetailMontant detailMontant : debitCreditFromDB.getDetails()) {
+                    if (detailMontant.getId() == detailMontantDTO.getId()) {
                         // update detailMontant value
                         detailMontant.setVirementInterneCompteId(detailMontantDTO.getVirementInterneCompteId());
                         detailMontant.setMontant(detailMontantDTO.getMontant());
@@ -211,8 +210,8 @@ public class DebitCreditUserService {
                             Categorie c = categorieRepository.getOne(detailMontantDTO.getCategorieId());
                             detailMontant.setCategorie(c);
                         }
-                        return detailMontant;
-                    });
+                    }
+                }
             });
         //remove unused details
         debitCreditFromDB.getDetails().stream()

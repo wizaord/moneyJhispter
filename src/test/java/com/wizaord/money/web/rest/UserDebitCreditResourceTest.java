@@ -13,7 +13,6 @@ import com.wizaord.money.web.rest.util.CompteBancaireTool;
 import com.wizaord.money.web.rest.util.DebitCreditTool;
 import com.wizaord.money.web.rest.util.UserTool;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -33,7 +32,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -104,6 +102,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void getDebitsCreditsByMonthNoValue() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -125,6 +124,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void getDebitsCreditsByMonth() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -146,6 +146,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void getDebitsCreditsTwoAccount() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -180,6 +181,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void getDebitsCreditsTwoAccount_notAllowed() throws Exception {
         //create two account (first to the user and the second to another person)
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -209,6 +211,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void getDebitsCreditsCriteriaOnName() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -230,6 +233,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void getDebitsCreditsCriteriaOnCategorie() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -237,7 +241,7 @@ public class UserDebitCreditResourceTest {
         //create 3 categories
         final Categorie[] catArray = new Categorie[3];
         for (int i = 0 ; i < 3; i++) {
-            catArray[i] = categorieRepository.saveAndFlush(CategorieTool.createCategorieWithName("CAT" + i));
+            catArray[i] = categorieRepository.saveAndFlush(CategorieTool.createCategorieWithName("CAT_2" + i));
         }
 
         //create 100 debit credit
@@ -262,6 +266,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void deleteDebitCredit() throws Exception {
         final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
         final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
@@ -283,6 +288,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void deleteDebitCreditNotAllow() throws Exception {
         final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(2));
         final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
@@ -327,10 +333,35 @@ public class UserDebitCreditResourceTest {
         assertThat(debitCreditFromDatabase.getDatePointage()).isNotNull();
     }
 
-    @Ignore
     @Test
+    @Transactional
     public void updateDebitCreditAddDetail() throws Exception {
-        fail("Not implemented");
+        //create compte + categorie + debitCredit + detailMontant
+        final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+        final Categorie categorie = categorieRepository.saveAndFlush(CategorieTool.createCategorieWithName("CATUPDATE1"));
+        final DetailMontant detailMontantWithCategorie = DebitCreditTool.createDetailMontantWithCategorie(categorie);
+        DebitCredit debitCredit = DebitCreditTool.createDebitCredit(cb);
+        debitCredit.addDetails(detailMontantWithCategorie);
+
+        debitCredit = debitCreditRepository.saveAndFlush(debitCredit);
+
+        //now create DTO
+        DebitCreditDTO debitCreditDTO = new DebitCreditDTO(debitCredit);
+        debitCreditDTO.setPointe(true);
+        debitCreditDTO.setDatePointage(Instant.now());
+        //remove on detail
+        debitCreditDTO.getDetailMontantDTOS().add(DebitCreditTool.createDetailMontantDTOWithCategorie(categorie));
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andExpect(status().isOk());
+
+        final DebitCredit debitCreditFromDatabase = debitCreditRepository.getOne(debitCredit.getId());
+        assertThat(debitCreditFromDatabase).isNotNull();
+        assertThat(debitCreditFromDatabase.isIsPointe()).isTrue();
+        assertThat(debitCreditFromDatabase.getDatePointage()).isNotNull();
+        assertThat(debitCreditFromDatabase.getDetails()).hasSize(2);
     }
 
     @Test
@@ -366,13 +397,44 @@ public class UserDebitCreditResourceTest {
         assertThat(debitCreditFromDatabase.getDetails()).hasSize(1).contains(detailMontantWithCategorie2);
     }
 
-    @Ignore
     @Test
+    @Transactional
     public void updateDebitCreditUpdateDetail() throws Exception {
-        fail("Not implemented");
+        //create compte + categorie + debitCredit + detailMontant
+        final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+        final Categorie categorie = categorieRepository.saveAndFlush(CategorieTool.createCategorieWithName("CATUPDATE1"));
+        final DetailMontant detailMontantWithCategorie = DebitCreditTool.createDetailMontantWithCategorie(categorie);
+        final DetailMontant detailMontantWithCategorie2 = DebitCreditTool.createDetailMontantWithCategorie(categorie);
+        DebitCredit debitCredit = DebitCreditTool.createDebitCredit(cb);
+        debitCredit.addDetails(detailMontantWithCategorie);
+        debitCredit.addDetails(detailMontantWithCategorie2);
+
+        debitCredit = debitCreditRepository.saveAndFlush(debitCredit);
+
+        //now create DTO
+        DebitCreditDTO debitCreditDTO = new DebitCreditDTO(debitCredit);
+        debitCreditDTO.setPointe(true);
+        debitCreditDTO.setDatePointage(Instant.now());
+        //remove on detail
+        debitCreditDTO.getDetailMontantDTOS().get(0).setMontant(444);
+        debitCreditDTO.getDetailMontantDTOS().get(1).setMontant(555);
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andExpect(status().isOk());
+
+        final DebitCredit debitCreditFromDatabase = debitCreditRepository.getOne(debitCredit.getId());
+        assertThat(debitCreditFromDatabase).isNotNull();
+        assertThat(debitCreditFromDatabase.isIsPointe()).isTrue();
+        assertThat(debitCreditFromDatabase.getDatePointage()).isNotNull();
+        assertThat(debitCreditFromDatabase.getDetails()).hasSize(2);
+        assertThat(debitCreditFromDatabase.getDetails().get(0).getMontant()).isEqualTo(444);
+        assertThat(debitCreditFromDatabase.getDetails().get(1).getMontant()).isEqualTo(555);
     }
 
     @Test
+    @Transactional
     public void updateDebitCreditNotExist() throws Exception {
         final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(2));
         final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
@@ -387,6 +449,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void updateDebitCreditNotAllowed() throws Exception {
         final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(2));
         final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
@@ -403,6 +466,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void createDebitCredit() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -426,6 +490,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void createDebitCreditWithDetailMontant() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -454,6 +519,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void createDebitCreditNotAllowed() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -469,6 +535,7 @@ public class UserDebitCreditResourceTest {
     }
 
     @Test
+    @Transactional
     public void createDebitCreditMissingMandatoryParam() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
@@ -486,6 +553,7 @@ public class UserDebitCreditResourceTest {
 
 
     @Test
+    @Transactional
     public void createDebitCreditCategoryDoesNotExist() throws Exception {
         //create account
         CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));

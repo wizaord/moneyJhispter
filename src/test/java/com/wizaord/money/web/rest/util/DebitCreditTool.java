@@ -101,5 +101,12 @@ public class DebitCreditTool {
         return dm;
     }
 
+    public static DetailMontantDTO createDetailMontantDTOWithCategorie(final Categorie c) {
+        final DetailMontantDTO detailMontantDTOWithoutCategorie = createDetailMontantDTOWithoutCategorie();
+        detailMontantDTOWithoutCategorie.setCategorieId(c.getId());
+        detailMontantDTOWithoutCategorie.setCategorieName(c.getLibelle());
+        return detailMontantDTOWithoutCategorie;
+    }
+
 
 }
