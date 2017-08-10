@@ -115,6 +115,15 @@ public class DebitCreditDTO {
         return detailMontantDTOS;
     }
 
+    public boolean detailMontantDTOContainId(final long id) {
+        for (DetailMontantDTO detailMontantDTO : this.detailMontantDTOS) {
+            if (detailMontantDTO.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Convert DTO in DebitCredit bean.
      * The followings parameters are not set :
@@ -135,7 +144,7 @@ public class DebitCreditDTO {
 
         db.setDetails(this.detailMontantDTOS.parallelStream()
             .map(detailMontantDTO -> detailMontantDTO.getDetailMontant())
-            .collect(Collectors.toSet()));
+            .collect(Collectors.toList()));
 
         return db;
     }

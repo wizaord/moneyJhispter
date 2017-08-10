@@ -107,7 +107,7 @@ public class DetailMontant implements Serializable {
         if (detailMontant.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), detailMontant.getId());
+        return (getId() == detailMontant.getId());
     }
 
     @Override

@@ -1,14 +1,8 @@
 package com.wizaord.money.web.rest;
 
 import com.wizaord.money.MoneyJhipsterApp;
-import com.wizaord.money.domain.Categorie;
-import com.wizaord.money.domain.CompteBancaire;
-import com.wizaord.money.domain.DebitCredit;
-import com.wizaord.money.domain.User;
-import com.wizaord.money.repository.CategorieRepository;
-import com.wizaord.money.repository.CompteBancaireRepository;
-import com.wizaord.money.repository.DebitCreditRepository;
-import com.wizaord.money.repository.UserRepository;
+import com.wizaord.money.domain.*;
+import com.wizaord.money.repository.*;
 import com.wizaord.money.service.AccountUserService;
 import com.wizaord.money.service.DebitCreditUserService;
 import com.wizaord.money.service.dto.DebitCreditDTO;
@@ -33,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -62,6 +57,8 @@ public class UserDebitCreditResourceTest {
     private CategorieRepository categorieRepository;
     @Autowired
     private DebitCreditUserService debitCreditUserService;
+    @Autowired
+    private DetailMontantRepository detailMontantRepository;
 
     private MockMvc restUserDebitCredit;
     private User user;
@@ -299,22 +296,110 @@ public class UserDebitCreditResourceTest {
         assertThat(debitCreditFromDatabase).isNotNull();
     }
 
-    @Ignore
     @Test
+    @Transactional
     public void updateDebitCredit() throws Exception {
-        fail("Not yet implemented");
+
+        final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+        final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
+
+        DebitCreditDTO debitCreditDTO = new DebitCreditDTO(debitCredit);
+        //change some values
+        debitCreditDTO.setPointe(true);
+        debitCreditDTO.setDatePointage(Instant.now());
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.dateTransaction").isNotEmpty())
+            .andExpect(jsonPath("$.libellePerso").value(DebitCreditTool.DEFAULT_LIBELLE))
+            .andExpect(jsonPath("$.libelleBanque").value(DebitCreditTool.DEFAULT_LIBELLE_BANQUE))
+            .andExpect(jsonPath("$.compteId").value(cb.getId()))
+            .andExpect(jsonPath("$.montantTotal").value(DebitCreditTool.DEFAULT_MONTANT_TOTAL))
+            .andExpect(jsonPath("$.pointe").value(true))
+            .andExpect(jsonPath("$.datePointage").isNotEmpty());
+
+        final DebitCredit debitCreditFromDatabase = debitCreditRepository.getOne(debitCredit.getId());
+        assertThat(debitCreditFromDatabase).isNotNull();
+        assertThat(debitCreditFromDatabase.isIsPointe()).isTrue();
+        assertThat(debitCreditFromDatabase.getDatePointage()).isNotNull();
     }
 
     @Ignore
+    @Test
+    public void updateDebitCreditAddDetail() throws Exception {
+        fail("Not implemented");
+    }
+
+    @Test
+    @Transactional
+    public void updateDebitCreditRemoveDetail() throws Exception {
+        //create compte + categorie + debitCredit + detailMontant
+        final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(user.getId().intValue()));
+        final Categorie categorie = categorieRepository.saveAndFlush(CategorieTool.createCategorieWithName("CATUPDATE1"));
+        final DetailMontant detailMontantWithCategorie = DebitCreditTool.createDetailMontantWithCategorie(categorie);
+        final DetailMontant detailMontantWithCategorie2 = DebitCreditTool.createDetailMontantWithCategorie(categorie);
+        DebitCredit debitCredit = DebitCreditTool.createDebitCredit(cb);
+        debitCredit.addDetails(detailMontantWithCategorie);
+        debitCredit.addDetails(detailMontantWithCategorie2);
+
+        debitCredit = debitCreditRepository.saveAndFlush(debitCredit);
+
+        //now create DTO
+        DebitCreditDTO debitCreditDTO = new DebitCreditDTO(debitCredit);
+        debitCreditDTO.setPointe(true);
+        debitCreditDTO.setDatePointage(Instant.now());
+        //remove on detail
+        debitCreditDTO.getDetailMontantDTOS().remove(0);
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andExpect(status().isOk());
+
+        final DebitCredit debitCreditFromDatabase = debitCreditRepository.getOne(debitCredit.getId());
+        assertThat(debitCreditFromDatabase).isNotNull();
+        assertThat(debitCreditFromDatabase.isIsPointe()).isTrue();
+        assertThat(debitCreditFromDatabase.getDatePointage()).isNotNull();
+        assertThat(debitCreditFromDatabase.getDetails()).hasSize(1).contains(detailMontantWithCategorie2);
+    }
+
+    @Ignore
+    @Test
+    public void updateDebitCreditUpdateDetail() throws Exception {
+        fail("Not implemented");
+    }
+
     @Test
     public void updateDebitCreditNotExist() throws Exception {
-        fail("Not yet implemented");
+        final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(2));
+        final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
+
+        DebitCreditDTO debitCreditDTO = new DebitCreditDTO(debitCredit);
+        debitCreditDTO.setId(123456L);
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andExpect(status().isForbidden());
     }
 
-    @Ignore
     @Test
     public void updateDebitCreditNotAllowed() throws Exception {
-        fail("Not yet implemented");
+        final CompteBancaire cb = compteBancaireRepository.saveAndFlush(CompteBancaireTool.createCompteBancaire(2));
+        final DebitCredit debitCredit = debitCreditRepository.saveAndFlush(DebitCreditTool.createDebitCredit(cb));
+
+        DebitCreditDTO debitCreditDTO = new DebitCreditDTO(debitCredit);
+
+        restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(debitCreditDTO)))
+            .andExpect(status().isForbidden());
+
+        final DebitCredit debitCreditFromDatabase = debitCreditRepository.getOne(debitCredit.getId());
+        assertThat(debitCreditFromDatabase).isNotNull();
     }
 
     @Test

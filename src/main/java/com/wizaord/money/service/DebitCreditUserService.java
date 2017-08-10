@@ -4,9 +4,11 @@ import com.codahale.metrics.annotation.Timed;
 import com.wizaord.money.domain.Categorie;
 import com.wizaord.money.domain.CompteBancaire;
 import com.wizaord.money.domain.DebitCredit;
+import com.wizaord.money.domain.DetailMontant;
 import com.wizaord.money.repository.CategorieRepository;
 import com.wizaord.money.repository.CompteBancaireRepository;
 import com.wizaord.money.repository.DebitCreditRepository;
+import com.wizaord.money.repository.DetailMontantRepository;
 import com.wizaord.money.service.dto.DebitCreditDTO;
 import com.wizaord.money.service.dto.DebitCreditSearch;
 import org.slf4j.Logger;
@@ -33,6 +35,8 @@ public class DebitCreditUserService {
     private CategorieRepository categorieRepository;
     @Autowired
     private CompteBancaireRepository compteBancaireRepository;
+    @Autowired
+    private DetailMontantRepository detailMontantRepository;
     @Autowired
     private EntityManager em;
 
@@ -97,6 +101,7 @@ public class DebitCreditUserService {
 
     /**
      * Create a debitCredit
+     *
      * @param debitCreditDTO
      */
     public DebitCreditDTO createDebitCredit(DebitCreditDTO debitCreditDTO) {
@@ -124,6 +129,7 @@ public class DebitCreditUserService {
     /**
      * Return the accountId for a debitCredit.
      * If the debitCredit does not exist, this function will return an optional null value.
+     *
      * @return
      */
     @Transactional(readOnly = true)
@@ -137,6 +143,7 @@ public class DebitCreditUserService {
 
     /**
      * This function remove the debitCredit
+     *
      * @param id
      */
     public void delete(Long id) {
@@ -146,6 +153,7 @@ public class DebitCreditUserService {
     /**
      * Check that the DTO is valid with the database object instance.
      * Some parameter must not change
+     *
      * @param debitCreditDTO
      * @return
      */
@@ -169,19 +177,66 @@ public class DebitCreditUserService {
 
     /**
      * Update a specific debitCredit with some new value
+     *
      * @param debitCreditDTO
      * @return
      */
     public DebitCreditDTO update(DebitCreditDTO debitCreditDTO) {
-        final DebitCredit debitCredit = debitCreditDTO.getDebitCredit();
         //set the account
         final CompteBancaire compteRattache = compteBancaireRepository.getOne(debitCreditDTO.getCompteId());
-        debitCredit.setCompteRattache(compteRattache);
 
         //refresh with the persistence manager
-        em.refresh(debitCredit);
+        DebitCredit debitCreditFromDB = debitCreditRepository.getOne(debitCreditDTO.getId());
+
+        //update only following parameter
+        debitCreditFromDB.setMontantTotal(debitCreditDTO.getMontantTotal());
+        debitCreditFromDB.setIsPointe(debitCreditDTO.isPointe());
+        debitCreditFromDB.setDatePointage(debitCreditDTO.getDatePointage());
+        debitCreditFromDB.setDateEnregistrement(debitCreditDTO.getDateTransaction());
+        debitCreditFromDB.setLibelleBanque(debitCreditDTO.getLibelleBanque());
+        debitCreditFromDB.setLibelle(debitCreditDTO.getLibellePerso());
+
+        //update current details
+        debitCreditDTO.getDetailMontantDTOS().parallelStream()
+            .filter(detailMontantDTO -> detailMontantDTO.getId() != null)
+            .forEach(detailMontantDTO -> {
+                debitCreditFromDB.getDetails().stream()
+                    .filter(detailMontant -> detailMontant.getId() == debitCreditDTO.getId())   // get only detailMontant to update
+                    .map(detailMontant -> {
+                        // update detailMontant value
+                        detailMontant.setVirementInterneCompteId(detailMontantDTO.getVirementInterneCompteId());
+                        detailMontant.setMontant(detailMontantDTO.getMontant());
+                        //check if categorie need to be updated
+                        if (detailMontant.getCategorie().getId() != detailMontantDTO.getCategorieId()) {
+                            Categorie c = categorieRepository.getOne(detailMontantDTO.getCategorieId());
+                            detailMontant.setCategorie(c);
+                        }
+                        return detailMontant;
+                    });
+            });
+        //remove unused details
+        debitCreditFromDB.getDetails().stream()
+            .forEach(detailMontant -> {
+                if (!debitCreditDTO.detailMontantDTOContainId(detailMontant.getId())) {
+                    // il faut supprimer ce detailMontant
+                    DebitCredit db = debitCreditFromDB.removeDetails(detailMontant);
+                    log.debug("Remove from debitCredit the detailMontant with ID {}", db.getId());
+                    //delete the detail montant from database
+                    detailMontantRepository.delete(detailMontant);
+                }
+            });
+
+        //add new details
+        debitCreditDTO.getDetailMontantDTOS().parallelStream()
+            .filter(detailMontantDTO -> detailMontantDTO.getId() == null)
+            .forEach(detailMontantDTO -> {
+                Categorie c = categorieRepository.getOne(detailMontantDTO.getCategorieId());
+                final DetailMontant detailMontant = detailMontantDTO.getDetailMontant();
+                detailMontant.setCategorie(c);
+                debitCreditFromDB.addDetails(detailMontant);
+            });
 
         //commit modification
-        return new DebitCreditDTO(debitCreditRepository.saveAndFlush(debitCredit));
+        return new DebitCreditDTO(debitCreditRepository.saveAndFlush(debitCreditFromDB));
     }
 }

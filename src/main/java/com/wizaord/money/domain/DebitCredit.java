@@ -9,9 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A DebitCredit.
@@ -48,10 +48,10 @@ public class DebitCredit implements Serializable {
     @NotNull
     private String libelleBanque;
 
-    @OneToMany(mappedBy = "debitCreditAssocie", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "debitCreditAssocie", cascade = {CascadeType.ALL})
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<DetailMontant> details = new HashSet<>();
+    private List<DetailMontant> details = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "compteRattache", referencedColumnName = "id", nullable = false)
@@ -144,11 +144,11 @@ public class DebitCredit implements Serializable {
         this.libelleBanque = libelleBanque;
     }
 
-    public Set<DetailMontant> getDetails() {
+    public List<DetailMontant> getDetails() {
         return details;
     }
 
-    public DebitCredit details(Set<DetailMontant> detailMontants) {
+    public DebitCredit details(List<DetailMontant> detailMontants) {
         this.details = detailMontants;
         return this;
     }
@@ -160,12 +160,13 @@ public class DebitCredit implements Serializable {
     }
 
     public DebitCredit removeDetails(DetailMontant detailMontant) {
-        this.details.remove(detailMontant);
+        int position = this.details.indexOf(detailMontant);
+        this.details.remove(position);
         detailMontant.setDebitCreditAssocie(null);
         return this;
     }
 
-    public void setDetails(Set<DetailMontant> detailMontants) {
+    public void setDetails(List<DetailMontant> detailMontants) {
         this.details = detailMontants;
     }
 
