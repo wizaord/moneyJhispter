@@ -54,7 +54,7 @@ public class UserDebitCreditResource {
     }
 
 
-    @GetMapping("/")
+    @PostMapping("/search")
     @Timed
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<List<DebitCreditDTO>> getDebitsCredits(@RequestBody DebitCreditSearch debitCreditSearch) {

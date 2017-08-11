@@ -34,7 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -92,7 +93,7 @@ public class UserDebitCreditResourceTest {
         DebitCreditSearch debitCreditSearch = new DebitCreditSearch();
         debitCreditSearch.addCompteId(cb.getId());
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
 //            .andDo(MockMvcResultHandlers.print())
@@ -116,7 +117,7 @@ public class UserDebitCreditResourceTest {
         debitCreditSearch.setBeginDate(LocalDate.of(2016, 5, 1));
         debitCreditSearch.setEndDate(LocalDate.of(2016, 6, 1));
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
             .andExpect(status().isOk())
@@ -138,7 +139,7 @@ public class UserDebitCreditResourceTest {
         debitCreditSearch.setBeginDate(LocalDate.of(2016, 2, 1));
         debitCreditSearch.setEndDate(LocalDate.of(2016, 3, 1));
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
             .andExpect(status().isOk())
@@ -161,7 +162,7 @@ public class UserDebitCreditResourceTest {
         debitCreditSearch.addCompteId(cb.getId())
             .addCompteId(cb2.getId());
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
             .andExpect(status().isOk())
@@ -174,7 +175,7 @@ public class UserDebitCreditResourceTest {
         DebitCreditSearch debitCreditSearch = new DebitCreditSearch();
         debitCreditSearch.setLibelleMatch("plop");
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
             .andExpect(status().isBadRequest());
@@ -191,7 +192,7 @@ public class UserDebitCreditResourceTest {
         debitCreditSearch.addCompteId(cb.getId())
             .addCompteId(cb2.getId());
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
             .andExpect(status().isForbidden());
@@ -204,7 +205,7 @@ public class UserDebitCreditResourceTest {
         DebitCreditSearch debitCreditSearch = new DebitCreditSearch();
         debitCreditSearch.setLibelleMatch("plop");
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
             .andExpect(status().isMethodNotAllowed());
@@ -225,7 +226,7 @@ public class UserDebitCreditResourceTest {
         debitCreditSearch.addCompteId(cb.getId());
         debitCreditSearch.setLibelleMatch("P1");
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
             .andExpect(status().isOk())
@@ -257,7 +258,7 @@ public class UserDebitCreditResourceTest {
         debitCreditSearch.addCompteId(cb.getId());
         debitCreditSearch.setCategorieName(catArray[0].getLibelle());
 
-        restUserDebitCredit.perform(get("/api/users/debitcredit/")
+        restUserDebitCredit.perform(post("/api/users/debitcredit/search")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(debitCreditSearch)))
 //            .andDo(MockMvcResultHandlers.print())
