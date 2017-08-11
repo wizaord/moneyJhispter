@@ -4,6 +4,9 @@
             "home": {
                 "title": "CompteBancaires"
             },
+            "details" : {
+                "title" : "details"
+            },
             "action": {
                 "create": "Creer",
                 "rename" : "Renommer"

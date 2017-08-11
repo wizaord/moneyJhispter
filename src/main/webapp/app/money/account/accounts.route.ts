@@ -1,7 +1,8 @@
 import {Routes} from '@angular/router';
 
 import {UserRouteAccessService} from '../../shared';
-import {ComptebancaireListComponent} from './comptebancaireList.component';
+import {ComptebancaireListComponent} from './compte-bancaire-list/comptebancaireList.component';
+import {CompteBancaireDetailsComponent} from './compte-bancaire-details/compte-bancaire-details.component';
 
 export const accountsRoute: Routes = [
     {
@@ -10,6 +11,14 @@ export const accountsRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'moneyJhipsterApp.accounts.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'accountDetails',
+        component: CompteBancaireDetailsComponent,
+        data: {
+            authorities: ['ROLE_USER'],
         },
         canActivate: [UserRouteAccessService]
     }

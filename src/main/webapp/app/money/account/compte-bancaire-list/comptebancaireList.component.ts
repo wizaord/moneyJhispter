@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {CompteBancaireService} from './account.service';
-import {CompteBancaire} from './models/CompteBancaire';
+import {CompteBancaireService} from '../account.service';
+import {CompteBancaire} from '../models/CompteBancaire';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'jhi-accounts',
@@ -13,7 +14,7 @@ export class ComptebancaireListComponent implements OnInit {
     public accountsInactif: CompteBancaire[];
     public soldeToutCompte: number;
 
-    constructor(public compteBancaireSrv: CompteBancaireService) {
+    constructor(public compteBancaireSrv: CompteBancaireService, public router: Router) {
         this.accounts = [];
         this.accountsInactif = [];
         this.soldeToutCompte = 0;
@@ -49,5 +50,9 @@ export class ComptebancaireListComponent implements OnInit {
         this.compteBancaireSrv.deleteAccount(compte.id).subscribe((response) => {
             this.accountsInactif.splice(this.accountsInactif.indexOf(compte), 1);
         })
+    }
+
+    onClickAccount(compte: CompteBancaire) {
+        this.router.navigate(['/accountDetails', {id : compte.id}]);
     }
 }

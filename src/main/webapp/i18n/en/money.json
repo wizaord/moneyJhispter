@@ -4,6 +4,9 @@
             "home": {
                 "title": "Accounts"
             },
+            "details" : {
+                "title" : "details"
+            },
             "action": {
                 "create": "Create",
                 "rename": "Rename"

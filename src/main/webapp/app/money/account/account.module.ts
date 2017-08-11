@@ -2,7 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {MoneyJhipsterSharedModule} from '../../shared/shared.module';
 import {RouterModule} from '@angular/router';
 
-import {ComptebancaireListComponent, accountsRoute, CompteBancaireService} from './';
+import {accountsRoute, CompteBancaireDetailsComponent, ComptebancaireListComponent, CompteBancaireService} from './';
 
 const ACCOUNT_STATES = [
     ...accountsRoute
@@ -11,10 +11,11 @@ const ACCOUNT_STATES = [
 @NgModule({
     imports: [
         MoneyJhipsterSharedModule,
-        RouterModule.forRoot(ACCOUNT_STATES, {useHash: true})
+        RouterModule.forRoot(ACCOUNT_STATES, {useHash: true, enableTracing: true})
     ],
     declarations: [
-        ComptebancaireListComponent
+        ComptebancaireListComponent,
+        CompteBancaireDetailsComponent
     ],
     entryComponents: [
         ComptebancaireListComponent

@@ -30,7 +30,7 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let compte of accounts " [ngClass]="{'table-danger': compte.montantSolde < 0}">
-                                            <td><a href="/money/comptes/compteAfficher?compteId={{compte.id}}">{{compte.libelle}}</a></td>
+                                            <td><a (click)="onClickAccount(compte)">{{compte.libelle}}</a></td>
                                             <td>{{compte.montantSolde}} €</td>
                                             <td>{{compte.lastTransaction}}</td>
                                             <td>
