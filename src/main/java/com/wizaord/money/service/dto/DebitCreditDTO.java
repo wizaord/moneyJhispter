@@ -19,7 +19,7 @@ public class DebitCreditDTO {
     private long compteId;
     private float montantTotal;
 
-    private List<DetailMontantDTO> detailMontantDTOS = new ArrayList<>();
+    private List<DetailMontantDTO> details = new ArrayList<>();
 
     public DebitCreditDTO() {
         super();
@@ -44,7 +44,7 @@ public class DebitCreditDTO {
     }
 
     public void addDetailMontant(DetailMontantDTO detail) {
-        this.detailMontantDTOS.add(detail);
+        this.details.add(detail);
     }
 
     public Long getId() {
@@ -111,12 +111,12 @@ public class DebitCreditDTO {
         this.montantTotal = montantTotal;
     }
 
-    public List<DetailMontantDTO> getDetailMontantDTOS() {
-        return detailMontantDTOS;
+    public List<DetailMontantDTO> getDetails() {
+        return details;
     }
 
     public boolean detailMontantDTOContainId(final long id) {
-        for (DetailMontantDTO detailMontantDTO : this.detailMontantDTOS) {
+        for (DetailMontantDTO detailMontantDTO : this.details) {
             if (detailMontantDTO.getId() == id) {
                 return true;
             }
@@ -142,7 +142,7 @@ public class DebitCreditDTO {
         db.setMontantTotal(this.montantTotal);
         db.setCompteRattache(null);
 
-        db.setDetails(this.detailMontantDTOS.parallelStream()
+        db.setDetails(this.details.parallelStream()
             .map(detailMontantDTO -> detailMontantDTO.getDetailMontant())
             .collect(Collectors.toList()));
 

@@ -351,7 +351,7 @@ public class UserDebitCreditResourceTest {
         debitCreditDTO.setPointe(true);
         debitCreditDTO.setDatePointage(Instant.now());
         //remove on detail
-        debitCreditDTO.getDetailMontantDTOS().add(DebitCreditTool.createDetailMontantDTOWithCategorie(categorie));
+        debitCreditDTO.getDetails().add(DebitCreditTool.createDetailMontantDTOWithCategorie(categorie));
 
         restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -384,7 +384,7 @@ public class UserDebitCreditResourceTest {
         debitCreditDTO.setPointe(true);
         debitCreditDTO.setDatePointage(Instant.now());
         //remove on detail
-        debitCreditDTO.getDetailMontantDTOS().remove(0);
+        debitCreditDTO.getDetails().remove(0);
 
         restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -417,8 +417,8 @@ public class UserDebitCreditResourceTest {
         debitCreditDTO.setPointe(true);
         debitCreditDTO.setDatePointage(Instant.now());
         //remove on detail
-        debitCreditDTO.getDetailMontantDTOS().get(0).setMontant(444);
-        debitCreditDTO.getDetailMontantDTOS().get(1).setMontant(555);
+        debitCreditDTO.getDetails().get(0).setMontant(444);
+        debitCreditDTO.getDetails().get(1).setMontant(555);
 
         restUserDebitCredit.perform(post("/api/users/debitcredit/" + debitCredit.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)

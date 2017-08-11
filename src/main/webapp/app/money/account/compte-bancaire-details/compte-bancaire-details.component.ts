@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CompteBancaireService} from '../account.service';
-import {DebitCredit} from '../account.model';
+import {DebitCredit, DetailMontant} from '../account.model';
 
 @Component({
     selector: 'jhi-compte-bancaire-details',
@@ -42,15 +42,10 @@ export class CompteBancaireDetailsComponent implements OnInit {
             const inputMonth = inputDate.substr(inputDate.indexOf('-') + 1);
             this.pageDate.setFullYear(parseInt(inputYear, 10), parseInt(inputMonth, 10));
         }
-
         this.loadPageContent();
     }
 
     private loadPageContent(): void {
-        console.log(`Loading account ids details :`);
-        console.log(JSON.stringify(this.accountIds));
-        console.log(`Loading content for month ${this.getCurrentMonthPage}`)
-
         this.debitCredits = [];
 
         // // calling get detais from service
@@ -64,36 +59,37 @@ export class CompteBancaireDetailsComponent implements OnInit {
 
     onClickPreviousMonth() {
         this.pageDate.setMonth(this.pageDate.getMonth() - 1);
-        this.refreshPageWithParameter();
+        this.loadPageContent();
     }
 
     onClickNextMonth() {
         this.pageDate.setMonth(this.pageDate.getMonth() + 1);
-        this.refreshPageWithParameter();
-    }
-
-    private refreshPageWithParameter(): void {
-        this.router.navigate(['/accountDetails', {id : this.accountIds.join('#'), pageDate : this.getCurrentMonthPage}]);
         this.loadPageContent();
     }
 
-    get getCurrentMonthPage(): string {
-        return this.formatDate(this.pageDate);
-    }
-
-    get getPreviousMonthDate(): string {
+    get getPreviousMonthDate(): Date {
         const newDate = new Date(this.pageDate);
         newDate.setMonth(newDate.getMonth() - 1);
-        return this.formatDate(newDate);
+        return newDate;
     }
 
-    get getNextMonthDate(): string {
+    get getNextMonthDate(): Date {
         const newDate = new Date(this.pageDate);
         newDate.setMonth(newDate.getMonth() + 1);
-        return this.formatDate(newDate);
+        return newDate;
     }
 
-    private formatDate(inputDate: Date): string {
-        return `${inputDate.getFullYear()}-${inputDate.getUTCMonth()}`
+    getCategorieName(debitCredit: DebitCredit): string {
+        if (debitCredit.details.length === 0) {
+            return '';
+        }
+        if (debitCredit.details.length === 1) {
+            const detail: DetailMontant = debitCredit.details[0];
+            if (detail.virementInterne === true) {
+                 return 'virement interne : ' + this.accountService.getAccountName(debitCredit.compteId);
+            }
+            return debitCredit.details[0].categorieName;
+        }
+        return 'ventilation';
     }
 }

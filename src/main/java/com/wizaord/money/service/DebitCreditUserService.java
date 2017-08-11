@@ -197,7 +197,7 @@ public class DebitCreditUserService {
         debitCreditFromDB.setLibelle(debitCreditDTO.getLibellePerso());
 
         //update current details
-        debitCreditDTO.getDetailMontantDTOS().parallelStream()
+        debitCreditDTO.getDetails().parallelStream()
             .filter(detailMontantDTO -> detailMontantDTO.getId() != null)
             .forEach(detailMontantDTO -> {
                 for(DetailMontant detailMontant : debitCreditFromDB.getDetails()) {
@@ -226,7 +226,7 @@ public class DebitCreditUserService {
             });
 
         //add new details
-        debitCreditDTO.getDetailMontantDTOS().parallelStream()
+        debitCreditDTO.getDetails().parallelStream()
             .filter(detailMontantDTO -> detailMontantDTO.getId() == null)
             .forEach(detailMontantDTO -> {
                 Categorie c = categorieRepository.getOne(detailMontantDTO.getCategorieId());

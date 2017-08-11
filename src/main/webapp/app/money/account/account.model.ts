@@ -28,6 +28,6 @@ export class DetailMontant {
         public categorieId: number,
         public categorieName: string,
         public virementInterneCompteId?: number,
-        public virementInterne?: number,
+        public virementInterne?: boolean,
     ) {}
 }
