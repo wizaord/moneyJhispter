@@ -16,7 +16,7 @@ export class DebitCreditPopupService {
 
     ) {}
 
-    open(component: Component, id?: number | any): NgbModalRef {
+    open(component: any, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
@@ -35,7 +35,7 @@ export class DebitCreditPopupService {
         }
     }
 
-    debitCreditModalRef(component: Component, debitCredit: DebitCredit): NgbModalRef {
+    debitCreditModalRef(component: any, debitCredit: DebitCredit): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.debitCredit = debitCredit;
         modalRef.result.then((result) => {

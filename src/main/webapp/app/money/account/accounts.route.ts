@@ -17,6 +17,9 @@ export const accountsRoute: Routes = [
     {
         path: 'accountDetails',
         component: CompteBancaireDetailsComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+        },
         canActivate: [UserRouteAccessService]
     }
 ];

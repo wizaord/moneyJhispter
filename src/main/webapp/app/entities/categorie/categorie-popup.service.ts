@@ -14,7 +14,7 @@ export class CategoriePopupService {
 
     ) {}
 
-    open(component: Component, id?: number | any): NgbModalRef {
+    open(component: any, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
@@ -29,7 +29,7 @@ export class CategoriePopupService {
         }
     }
 
-    categorieModalRef(component: Component, categorie: Categorie): NgbModalRef {
+    categorieModalRef(component: any, categorie: Categorie): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.categorie = categorie;
         modalRef.result.then((result) => {
