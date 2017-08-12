@@ -9,7 +9,6 @@ import { MoneyJhipsterHomeModule } from './home/home.module';
 import { MoneyJhipsterAdminModule } from './admin/admin.module';
 import { MoneyJhipsterAccountModule } from './account/account.module';
 import { MoneyJhipsterEntityModule } from './entities/entity.module';
-import { MoneyJhipsterMoneyModule } from './money/money.module';
 
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -37,7 +36,6 @@ import {
         MoneyJhipsterAdminModule,
         MoneyJhipsterAccountModule,
         MoneyJhipsterEntityModule,
-        MoneyJhipsterMoneyModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -46,7 +44,7 @@ import {
         ErrorComponent,
         PageRibbonComponent,
         ActiveMenuDirective,
-        FooterComponent,
+        FooterComponent
     ],
     providers: [
         ProfileService,

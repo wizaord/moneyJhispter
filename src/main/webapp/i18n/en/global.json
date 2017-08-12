@@ -4,18 +4,9 @@
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
-
-            "billing" : {
-                "account" : "Account",
-                "state" : "States"
-            },
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
-                "categorie": "Categorie",
-                "compteBancaire": "Compte Bancaire",
-                "debitCredit": "Debit Credit",
-                "detailMontant": "Detail Montant",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
