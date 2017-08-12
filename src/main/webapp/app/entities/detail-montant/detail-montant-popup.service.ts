@@ -14,7 +14,7 @@ export class DetailMontantPopupService {
 
     ) {}
 
-    open(component: Component, id?: number | any): NgbModalRef {
+    open(component: any, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
@@ -29,7 +29,7 @@ export class DetailMontantPopupService {
         }
     }
 
-    detailMontantModalRef(component: Component, detailMontant: DetailMontant): NgbModalRef {
+    detailMontantModalRef(component: any, detailMontant: DetailMontant): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.detailMontant = detailMontant;
         modalRef.result.then((result) => {

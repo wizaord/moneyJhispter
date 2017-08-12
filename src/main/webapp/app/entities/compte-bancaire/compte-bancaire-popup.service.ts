@@ -16,7 +16,7 @@ export class CompteBancairePopupService {
 
     ) {}
 
-    open(component: Component, id?: number | any): NgbModalRef {
+    open(component: any, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
@@ -35,7 +35,7 @@ export class CompteBancairePopupService {
         }
     }
 
-    compteBancaireModalRef(component: Component, compteBancaire: CompteBancaire): NgbModalRef {
+    compteBancaireModalRef(component: any, compteBancaire: CompteBancaire): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.compteBancaire = compteBancaire;
         modalRef.result.then((result) => {
