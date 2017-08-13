@@ -1,0 +1,40 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">{{debitCredit.libellePerso}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="row">
+                <div class="form-group">
+                    <label for="libellePerso">Libelle : </label>
+                    <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1" [(ngModel)]="debitCredit.libellePerso" #name="ngModel">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-light" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>
+
+<div class="container-fluid">
+    <tr class="col-12" (click)="open(content)">
+        <td class="col-xs-1">{{debitCredit.dateTransaction | date:"MM/dd"}}</td>
+        <td class="col-xs-3">{{debitCredit.libellePerso}}</td>
+        <td class="col-xs-3 ">{{getCategorieName(debitCredit)}}</td>
+        <td class="col-xs-2 ">{{debitCredit.compteId}}</td>
+        <div *ngIf="debitCredit.montantTotal > 0">
+            <td class="col-xs-1">{{debitCredit.montantTotal}}</td>
+            <td class="col-xs-1"></td>
+        </div>
+        <div *ngIf="debitCredit.montantTotal <= 0">
+            <td class="col-xs-1"></td>
+            <td class="col-xs-1">{{debitCredit.montantTotal}}</td>
+        </div>
+        <td>TODO</td>
+    </tr>
+</div>
+<!--<td><button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button></td>-->

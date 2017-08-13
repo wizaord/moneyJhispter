@@ -3,6 +3,7 @@ import {MoneyJhipsterSharedModule} from '../../shared/shared.module';
 import {RouterModule} from '@angular/router';
 
 import {accountsRoute, CompteBancaireDetailsComponent, ComptebancaireListComponent, CompteBancaireService} from './';
+import { CompteBancaireDetailModalComponent } from './compte-bancaire-detail-modal/compte-bancaire-detail-modal.component';
 
 const ACCOUNT_STATES = [
     ...accountsRoute
@@ -15,7 +16,8 @@ const ACCOUNT_STATES = [
     ],
     declarations: [
         ComptebancaireListComponent,
-        CompteBancaireDetailsComponent
+        CompteBancaireDetailsComponent,
+        CompteBancaireDetailModalComponent
     ],
     entryComponents: [
         ComptebancaireListComponent

@@ -1,4 +1,5 @@
 <div class="container-fluid">
+
     <div class="row justify-content-between">
         <div class="col">
             <button type="button" class="btn btn-primary" (click)="onClickPreviousMonth()">{{getPreviousMonthDate | date:"yyyy - MM"}}</button>
@@ -26,21 +27,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let debitCredit of debitCredits">
-                        <td class="col-xs-1">{{debitCredit.dateTransaction | date:"MM/dd"}}</td>
-                        <td class="col-xs-3">{{debitCredit.libellePerso}}</td>
-                        <td class="col-xs-3 hidden-sm hidden-xs">{{getCategorieName(debitCredit)}}</td>
-                        <td class="col-xs-2 hidden-md hidden-sm hidden-xs">{{debitCredit.compteId}}</td>
-                        <div *ngIf="debitCredit.montantTotal > 0">
-                            <td class="col-xs-1">{{debitCredit.montantTotal}}</td>
-                            <td class="col-xs-1"></td>
-                        </div>
-                        <div *ngIf="debitCredit.montantTotal <= 0">
-                            <td class="col-xs-1"></td>
-                            <td class="col-xs-1">{{debitCredit.montantTotal}}</td>
-                        </div>
-                        <td>TODO</td>
-                    </tr>
+                    <div *ngFor="let debitCredit of debitCredits">
+                        <jhi-compte-bancaire-detail-modal [debitCredit]="debitCredit" (onUpdate)="updateDebitCredit($event)"></jhi-compte-bancaire-detail-modal>
+                    </div>
                 </tbody>
             </table>
         </div>

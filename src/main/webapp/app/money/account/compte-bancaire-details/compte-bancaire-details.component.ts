@@ -79,17 +79,8 @@ export class CompteBancaireDetailsComponent implements OnInit {
         return newDate;
     }
 
-    getCategorieName(debitCredit: DebitCredit): string {
-        if (debitCredit.details.length === 0) {
-            return '';
-        }
-        if (debitCredit.details.length === 1) {
-            const detail: DetailMontant = debitCredit.details[0];
-            if (detail.virementInterne === true) {
-                 return 'virement interne : ' + this.accountService.getAccountName(debitCredit.compteId);
-            }
-            return debitCredit.details[0].categorieName;
-        }
-        return 'ventilation';
+    updateDebitCredit(debitCredit: DebitCredit) {
+        console.log('Update this element : ' + debitCredit.id);
+        console.log(JSON.stringify(debitCredit));
     }
 }
