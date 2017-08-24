@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbDateStruct, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DebitCredit, DetailMontant} from '../account.model';
 import {CompteBancaireService} from '../account.service';
 
@@ -22,6 +22,7 @@ export class CompteBancaireDetailModalComponent implements OnInit {
 
     @Input('debitCredit')
     public debitCredit: DebitCredit;
+    public dateTransaction: NgbDateStruct;
 
     @Output()
     onUpdate = new EventEmitter<DebitCredit>();
@@ -34,8 +35,14 @@ export class CompteBancaireDetailModalComponent implements OnInit {
 
     open(content) {
         console.log('Opening modal for debitCredit : ' + this.debitCredit.id);
+
+        // converting the date transaction
+        this.dateTransaction = this.dateToNgbDateStruct(this.debitCredit.dateTransaction);
+
+        // opening the modal page
         this.modalService.open(content).result.then((result) => {
             console.log(`Closed with: ${result}`);
+            this.debitCredit.dateTransaction = this.ngbDateStructToDate(this.dateTransaction);
             this.onUpdate.emit(this.debitCredit);
         }, (reason) => {
             console.log(`Dismissed ${this.getDismissReason(reason)}`);
@@ -48,7 +55,7 @@ export class CompteBancaireDetailModalComponent implements OnInit {
         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
             return 'by clicking on a backdrop';
         } else {
-            return  `with: ${reason}`;
+            return `with: ${reason}`;
         }
     }
 
@@ -66,4 +73,22 @@ export class CompteBancaireDetailModalComponent implements OnInit {
         return 'ventilation';
     }
 
+    get accountName(): String {
+        return this.accountService.getAccountName(this.debitCredit.compteId);
+    }
+
+    get dateTransactionCorrect(): Date {
+        const currentDate: Date = new Date(this.debitCredit.dateTransaction);
+        currentDate.setDate(currentDate.getDate() - 1);
+        return currentDate;
+    }
+
+    private dateToNgbDateStruct(myDate: Date): NgbDateStruct {
+        const currentDate: Date = new Date(this.debitCredit.dateTransaction);
+        return { day: currentDate.getDate() - 1, month: currentDate.getMonth() + 1, year: currentDate.getFullYear() };
+    }
+
+    private ngbDateStructToDate(myDate: NgbDateStruct): Date {
+        return new Date(myDate.year, myDate.month - 1, myDate.day + 1);
+    }
 }

@@ -1,18 +1,77 @@
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title">{{debitCredit.libellePerso}}</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form>
+        <div class="col">
+            <div class="col">
+                <h3>{{accountName}}</h3>
+            </div>
             <div class="row">
-                <div class="form-group">
-                    <label for="libellePerso">Libelle : </label>
-                    <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1" [(ngModel)]="debitCredit.libellePerso" #name="ngModel">
+                <div><h5>{{debitCredit.libellePerso}}</h5></div>
+                <div>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <form >
+            <div class="form-group">
+                <label for="libellePerso">Libelle : </label>
+                <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1" [(ngModel)]="debitCredit.libellePerso" #name="ngModel">
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                    <div *ngIf="name.errors.required">Libelle is required.</div>
+                    <div *ngIf="name.errors.minlength">Libelle must be at least 1 character long.</div>
+                    <!--<div *ngIf="name.errors.forbiddenName">Name cannot be Bob.</div>-->
+                </div>
+            </div>
+
+            <ngbd-example-box component="tabset" demotitle="Info">
+                <div class="card">
+                    <div class="card-header"><span class="h3">Infos</span></div>
+                    <!---->
+                    <div class="card-body form-inline">
+                        <div class="form-group">
+                            <label>Date : </label>
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="dateTransaction" ngbDatepicker #d="ngbDatepicker">
+                                <button class="input-group-addon" (click)="d.toggle()" type="button"><i class='fa fa-calendar' aria-hidden="true"></i></button>
+                            </div>
+                            <!--<input id="datePointage" name="datePointage" class="form-control" required minlength="1" [(ngModel)]="debitCredit.datePointage" #name="ngModel">-->
+                        </div>
+                        <div class="form-group">
+                            {{debitCredit.libelleBanque}}
+                        </div>
+                        <div class="form-group">
+                            {{debitCredit.montantTotal}}
+                        </div>
+                        <div class="form-group">
+                            {{debitCredit.dateTransaction}}
+                        </div>
+                    </div>
+                </div>
+            </ngbd-example-box>
+
+            <ngbd-example-box component="tabset" demotitle="Ventilation">
+                <div class="card">
+                    <div class="card-header"><span class="h3">Ventilation</span></div>
+                    <!---->
+                    <div class="card-body">
+                        <ngb-tabset>
+                            <ngb-tab *ngFor="let ventilation of debitCredit.details" title="{{ventilation.id}}">
+                                <ng-template ngbTabContent>
+                                    <p>{{ventilation.categorieId}}</p>
+                                    <p>{{ventilation.categorieName}}</p>
+                                    <p>{{ventilation.montant}}</p>
+                                    <p>{{ventilation.virementInterne}}</p>
+                                    <p>{{ventilation.virementInterneCompteId}}</p>
+                                </ng-template>
+                            </ngb-tab>
+                        </ngb-tabset>
+                    </div>
+                </div>
+            </ngbd-example-box>
+            <p>{{debitCredit | json}}</p>
         </form>
     </div>
     <div class="modal-footer">
@@ -22,7 +81,7 @@
 
 <div class="container-fluid">
     <tr class="col-12" (click)="open(content)">
-        <td class="col-xs-1">{{debitCredit.dateTransaction | date:"MM/dd"}}</td>
+        <td class="col-xs-1">{{dateTransactionCorrect.toDateString() | date:"MM/dd"}}</td>
         <td class="col-xs-3">{{debitCredit.libellePerso}}</td>
         <td class="col-xs-3 ">{{getCategorieName(debitCredit)}}</td>
         <td class="col-xs-2 ">{{debitCredit.compteId}}</td>

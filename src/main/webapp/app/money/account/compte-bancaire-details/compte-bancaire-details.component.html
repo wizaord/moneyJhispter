@@ -5,7 +5,7 @@
             <button type="button" class="btn btn-primary" (click)="onClickPreviousMonth()">{{getPreviousMonthDate | date:"yyyy - MM"}}</button>
         </div>
         <div class="col">
-            <h3>{{pageDate | date:"yyyy - MM"}}</h3>
+            <h3>{{pageDate.toString() | date:"yyyy - MM"}}</h3>
         </div>
         <div class="col">
             <button type="button" class="btn btn-primary" (click)="onClickNextMonth()">{{getNextMonthDate | date:"yyyy - MM"}}</button>

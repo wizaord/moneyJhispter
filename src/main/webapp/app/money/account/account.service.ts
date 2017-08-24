@@ -27,6 +27,8 @@ export class CompteBancaireService {
     }
 
     getAccountName(accountId: number): String {
+        // console.log('Looking for the number ' + accountId);
+        // console.log('In => ' + JSON.stringify(this.userCompteBancaire));
         if (this.userCompteBancaire.length === 0) {
             return '';
         }
