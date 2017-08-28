@@ -16,20 +16,22 @@
                     Solde tout compte : {{soldeToutCompte}} €
                 </div>
                 <div class="col-md-offset-1">
-                    <ngb-accordion #acc="ngbAccordion" activeIds="compte-actif-panel">
-                        <ngb-panel id="compte-actif-panel" title="Comptes Actifs">
-                            <ng-template ngbPanelContent>
+                    <ngbd-example-box component="tabset" demotitle="Comptes Actifs">
+                        <div class="card">
+                            <div class="card-header"><span class="h3">Comptes Actifs</span></div>
+                            <!---->
+                            <div class="card-body">
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                    <tr>
-                                        <th>Compte</th>
-                                        <th>Solde</th>
-                                        <th>Dernière transaction</th>
-                                        <th class="col-xs-1"></th>
-                                    </tr>
+                                        <tr>
+                                            <th>Compte</th>
+                                            <th>Solde</th>
+                                            <th>Dernière transaction</th>
+                                            <th class="col-xs-1"></th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let compte of accounts " [ngClass]="{'table-danger': compte.montantSolde < 0}">
+                                        <tr *ngFor="let compte of accounts | filterAccountClos:false" [ngClass]="{'table-danger': compte.montantSolde < 0}">
                                             <td><a (click)="onClickAccount(compte)">{{compte.libelle}}</a></td>
                                             <td>{{compte.montantSolde}} €</td>
                                             <td>{{compte.lastTransaction}}</td>
@@ -39,38 +41,41 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </ng-template>
-                        </ngb-panel>
-                    </ngb-accordion>
+                            </div>
+                        </div>
+                    </ngbd-example-box>
+
                 </div>
                 <div class="col-md-offset-1">
-                    <ngb-accordion #acc="ngbAccordion">
-                        <ngb-panel id="compte-inactif-panel" title="Comptes Inactifs">
-                            <ng-template ngbPanelContent>
+                    <ngbd-example-box component="tabset" demotitle="Comptes Inactifs">
+                        <div class="card">
+                            <div class="card-header"><span class="h3">Comptes Inactifs</span></div>
+                            <!---->
+                            <div class="card-body">
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                    <tr>
-                                        <th>Compte</th>
-                                        <th>Solde</th>
-                                        <th>Dernière transaction</th>
-                                        <th class="col-xs-1"></th>
-                                    </tr>
+                                        <tr>
+                                            <th>Compte</th>
+                                            <th>Solde</th>
+                                            <th>Dernière transaction</th>
+                                            <th class="col-xs-1"></th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let compte of accountsInactif " [ngClass]="{'table-danger': compte.montantSolde < 0}">
-                                        <td><a href="/money/comptes/compteAfficher?compteId={{compte.id}}">{{compte.libelle}}</a></td>
-                                        <td>{{compte.montantSolde}} €</td>
-                                        <td>{{compte.lastTransaction}}</td>
-                                        <td>
-                                            <button type='button' class='btn btn-default btn-xs' (click)="openAccount(compte)"><i class='fa fa-folder-open' aria-hidden="true"></i></button>
-                                            <button type='button' class='btn btn-default btn-xs' (click)="deleteAccount(compte)"><i class='fa fa-trash' aria-hidden="true"></i></button>
-                                        </td>
-                                    </tr>
+                                        <tr *ngFor="let compte of accounts | filterAccountClos:true" [ngClass]="{'table-danger': compte.montantSolde < 0}">
+                                            <td><a href="/money/comptes/compteAfficher?compteId={{compte.id}}">{{compte.libelle}}</a></td>
+                                            <td>{{compte.montantSolde}} €</td>
+                                            <td>{{compte.lastTransaction}}</td>
+                                            <td>
+                                                <button type='button' class='btn btn-default btn-xs' (click)="openAccount(compte)"><i class='fa fa-folder-open' aria-hidden="true"></i></button>
+                                                <button type='button' class='btn btn-default btn-xs' (click)="deleteAccount(compte)"><i class='fa fa-trash' aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
-                            </ng-template>
-                        </ngb-panel>
-                    </ngb-accordion>
+                            </div>
+                        </div>
+                    </ngbd-example-box>
                 </div>
             </div>
         </div>

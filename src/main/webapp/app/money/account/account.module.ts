@@ -4,6 +4,7 @@ import {RouterModule} from '@angular/router';
 
 import {accountsRoute, CompteBancaireDetailsComponent, ComptebancaireListComponent, CompteBancaireService} from './';
 import { CompteBancaireDetailModalComponent } from './compte-bancaire-detail-modal/compte-bancaire-detail-modal.component';
+import { AccountPipePipe } from './compte-bancaire-list/account-pipe.pipe';
 
 const ACCOUNT_STATES = [
     ...accountsRoute
@@ -17,7 +18,8 @@ const ACCOUNT_STATES = [
     declarations: [
         ComptebancaireListComponent,
         CompteBancaireDetailsComponent,
-        CompteBancaireDetailModalComponent
+        CompteBancaireDetailModalComponent,
+        AccountPipePipe
     ],
     entryComponents: [
         ComptebancaireListComponent
