@@ -15,10 +15,11 @@
         </div>
     </div>
     <div class="modal-body">
-        <form >
+        <form>
             <div class="form-group">
                 <label for="libellePerso">Libelle : </label>
-                <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1" [(ngModel)]="debitCredit.libellePerso" #name="ngModel">
+                <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1"
+                       [(ngModel)]="debitCredit.libellePerso" #name="ngModel">
                 <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
                     <div *ngIf="name.errors.required">Libelle is required.</div>
                     <div *ngIf="name.errors.minlength">Libelle must be at least 1 character long.</div>
@@ -34,10 +35,11 @@
                         <div class="form-group">
                             <label>Date : </label>
                             <div class="input-group">
-                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="dateTransaction" ngbDatepicker #d="ngbDatepicker">
-                                <button class="input-group-addon" (click)="d.toggle()" type="button"><i class='fa fa-calendar' aria-hidden="true"></i></button>
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                                       [(ngModel)]="dateTransaction" ngbDatepicker #d="ngbDatepicker">
+                                <button class="input-group-addon" (click)="d.toggle()" type="button"><i
+                                    class='fa fa-calendar' aria-hidden="true"></i></button>
                             </div>
-                            <!--<input id="datePointage" name="datePointage" class="form-control" required minlength="1" [(ngModel)]="debitCredit.datePointage" #name="ngModel">-->
                         </div>
                         <div class="form-group">
                             {{debitCredit.libelleBanque}}
@@ -79,21 +81,11 @@
     </div>
 </ng-template>
 
-<div class="container-fluid">
-    <tr class="col-12" (click)="open(content)">
-        <td class="col-xs-1">{{dateTransactionCorrect.toDateString() | date:"MM/dd"}}</td>
-        <td class="col-xs-3">{{debitCredit.libellePerso}}</td>
-        <td class="col-xs-3 ">{{getCategorieName(debitCredit)}}</td>
-        <td class="col-xs-2 ">{{debitCredit.compteId}}</td>
-        <div *ngIf="debitCredit.montantTotal > 0">
-            <td class="col-xs-1">{{debitCredit.montantTotal}}</td>
-            <td class="col-xs-1"></td>
-        </div>
-        <div *ngIf="debitCredit.montantTotal <= 0">
-            <td class="col-xs-1"></td>
-            <td class="col-xs-1">{{debitCredit.montantTotal}}</td>
-        </div>
-        <td>TODO</td>
-    </tr>
-</div>
-<!--<td><button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button></td>-->
+<td class="col-xs-1">{{dateTransactionCorrect.toDateString() | date:"MM/dd"}}</td>
+<td class="col-xs-3">{{debitCredit.libellePerso}}</td>
+<td class="col-xs-3 ">{{getCategorieName(debitCredit)}}</td>
+<td class="col-xs-2 ">{{debitCredit.compteId}}</td>
+<td class="col-xs-1" *ngIf="debitCredit.montantTotal > 0">{{debitCredit.montantTotal}}</td>
+<td class="col-xs-1"></td>
+<td class="col-xs-1" *ngIf="debitCredit.montantTotal <= 0">{{debitCredit.montantTotal}}</td>
+<td>TODO</td>

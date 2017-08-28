@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ModalDismissReasons, NgbDateStruct, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DebitCredit, DetailMontant} from '../account.model';
 import {CompteBancaireService} from '../account.service';
 
 @Component({
-    selector: 'jhi-compte-bancaire-detail-modal',
+    selector: '[jhi-compte-bancaire-td]',
     templateUrl: './compte-bancaire-detail-modal.component.html',
     encapsulation: ViewEncapsulation.None,
     styles: [`
@@ -23,6 +23,7 @@ export class CompteBancaireDetailModalComponent implements OnInit {
     @Input('debitCredit')
     public debitCredit: DebitCredit;
     public dateTransaction: NgbDateStruct;
+    @ViewChild('content') modalContent;
 
     @Output()
     onUpdate = new EventEmitter<DebitCredit>();
@@ -33,14 +34,14 @@ export class CompteBancaireDetailModalComponent implements OnInit {
     ngOnInit() {
     }
 
-    open(content) {
+    open() {
         console.log('Opening modal for debitCredit : ' + this.debitCredit.id);
 
         // converting the date transaction
         this.dateTransaction = this.dateToNgbDateStruct(this.debitCredit.dateTransaction);
 
         // opening the modal page
-        this.modalService.open(content).result.then((result) => {
+        this.modalService.open(this.modalContent).result.then((result) => {
             console.log(`Closed with: ${result}`);
             this.debitCredit.dateTransaction = this.ngbDateStructToDate(this.dateTransaction);
             this.onUpdate.emit(this.debitCredit);
