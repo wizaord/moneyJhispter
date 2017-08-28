@@ -22,7 +22,9 @@ export class CompteBancaireDetailModalComponent implements OnInit {
 
     @Input('debitCredit')
     public debitCredit: DebitCredit;
+
     public dateTransaction: NgbDateStruct;
+
     @ViewChild('content') modalContent;
 
     @Output()
@@ -91,5 +93,13 @@ export class CompteBancaireDetailModalComponent implements OnInit {
 
     private ngbDateStructToDate(myDate: NgbDateStruct): Date {
         return new Date(myDate.year, myDate.month - 1, myDate.day + 1);
+    }
+
+    get datePointageCheck(): boolean {
+        return this.debitCredit.datePointage !== null;
+    }
+
+    set datePointageCheck(input: boolean){
+        this.debitCredit.datePointage = (input) ? new Date() : null;
     }
 }

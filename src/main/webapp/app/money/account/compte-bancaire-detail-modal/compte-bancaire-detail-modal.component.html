@@ -1,4 +1,4 @@
-<ng-template #content let-c="close" let-d="dismiss">
+<ng-template #content let-c="close" let-modalD="dismiss">
     <div class="modal-header">
         <div class="col">
             <div class="col">
@@ -7,7 +7,7 @@
             <div class="row">
                 <div><h5>{{debitCredit.libellePerso}}</h5></div>
                 <div>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <button type="button" class="close" aria-label="Close" (click)="modalD('Cross click')">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -18,8 +18,7 @@
         <form>
             <div class="form-group">
                 <label for="libellePerso">Libelle : </label>
-                <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1"
-                       [(ngModel)]="debitCredit.libellePerso" #name="ngModel">
+                <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1" [(ngModel)]="debitCredit.libellePerso" #name="ngModel">
                 <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
                     <div *ngIf="name.errors.required">Libelle is required.</div>
                     <div *ngIf="name.errors.minlength">Libelle must be at least 1 character long.</div>
@@ -31,25 +30,26 @@
                 <div class="card">
                     <div class="card-header"><span class="h3">Infos</span></div>
                     <!---->
-                    <div class="card-body form-inline">
-                        <div class="form-group">
-                            <label>Date : </label>
-                            <div class="input-group">
-                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                       [(ngModel)]="dateTransaction" ngbDatepicker #d="ngbDatepicker">
-                                <button class="input-group-addon" (click)="d.toggle()" type="button"><i
-                                    class='fa fa-calendar' aria-hidden="true"></i></button>
+                    <div class="card-body row">
+                        <form class="form-inline">
+                            <label class="sr-only" for="dp">DatePicker</label>
+                            <div class="input-group col-6">
+                                <input id="dp" class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="dateTransaction" ngbDatepicker #dp="ngbDatepicker">
+                                <button class="input-group-addon" (click)="dp.toggle()" type="button"><i class='fa fa-calendar' aria-hidden="true"></i></button>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            {{debitCredit.libelleBanque}}
-                        </div>
-                        <div class="form-group">
-                            {{debitCredit.montantTotal}}
-                        </div>
-                        <div class="form-group">
-                            {{debitCredit.dateTransaction}}
-                        </div>
+
+                            <label class="sr-only" for="montantTotal">DatePicker</label>
+                            <div class="input-group col-3">
+                                <input id="montantTotal" class="form-control" name="montantTotal" [(ngModel)]="debitCredit.montantTotal">
+                                <span class="input-group-addon">€</span>
+                            </div>
+
+                            <div class="form-check col-3">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="formPointage" [(ngModel)]="datePointageCheck">Checked ?
+                                </label>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </ngbd-example-box>
@@ -77,7 +77,8 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-outline-light" (click)="c('Close click')">Close</button>
+        <button class="btn btn-outline-light" (click)="modalD('Close click')">Close</button>
+        <button class="btn btn-outline-light" (click)="c('Update click')">Update</button>
     </div>
 </ng-template>
 
@@ -85,7 +86,7 @@
 <td class="col-xs-3">{{debitCredit.libellePerso}}</td>
 <td class="col-xs-3 ">{{getCategorieName(debitCredit)}}</td>
 <td class="col-xs-2 ">{{debitCredit.compteId}}</td>
-<td class="col-xs-1" *ngIf="debitCredit.montantTotal > 0">{{debitCredit.montantTotal}}</td>
-<td class="col-xs-1"></td>
 <td class="col-xs-1" *ngIf="debitCredit.montantTotal <= 0">{{debitCredit.montantTotal}}</td>
+<td class="col-xs-1"></td>
+<td class="col-xs-1" *ngIf="debitCredit.montantTotal > 0">{{debitCredit.montantTotal}}</td>
 <td>TODO</td>

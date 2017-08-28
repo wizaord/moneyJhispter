@@ -19,6 +19,7 @@ export const accountsRoute: Routes = [
         component: CompteBancaireDetailsComponent,
         data: {
             authorities: ['ROLE_USER'],
+            pageTitle: 'moneyJhipsterApp.accounts.home.title'
         },
         canActivate: [UserRouteAccessService]
     }
