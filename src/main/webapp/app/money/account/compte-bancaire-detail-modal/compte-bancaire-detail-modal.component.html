@@ -1,13 +1,13 @@
-<ng-template #content let-c="close" let-modalD="dismiss">
+<ng-template #content>
     <div class="modal-header">
         <div class="col">
             <div class="col">
                 <h3>{{accountName}}</h3>
             </div>
             <div class="row">
-                <div><h5>{{debitCredit.libellePerso}}</h5></div>
-                <div>
-                    <button type="button" class="close" aria-label="Close" (click)="modalD('Cross click')">
+                <div class="col-xs-11"><h5>{{debitCredit.libellePerso}}</h5></div>
+                <div class="col-xs-1 pull-right">
+                    <button type="button" class="close" aria-label="Close" (click)="clear()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -15,13 +15,18 @@
         </div>
     </div>
     <div class="modal-body">
-        <form>
+        <form novalidate>
             <div class="form-group">
                 <label for="libellePerso">Libelle : </label>
-                <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1" [(ngModel)]="debitCredit.libellePerso" #name="ngModel">
-                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-                    <div *ngIf="name.errors.required">Libelle is required.</div>
-                    <div *ngIf="name.errors.minlength">Libelle must be at least 1 character long.</div>
+                <div class="input-group">
+                    <input id="libellePerso" name="libellePerso" class="form-control" required minlength="1" [(ngModel)]="debitCredit.libellePerso" #libelleForm="ngModel">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" (click)="debitCredit.libellePerso=''"><i class="fa fa-times"></i></button>
+                    </span>
+                </div>
+                <div *ngIf="libelleForm.invalid && (libelleForm.dirty || libelleForm.touched)" class="alert alert-danger">
+                    <div *ngIf="libelleForm.errors.required">Libelle is required.</div>
+                    <div *ngIf="libelleForm.errors.minlength">Libelle must be at least 1 character long.</div>
                     <!--<div *ngIf="name.errors.forbiddenName">Name cannot be Bob.</div>-->
                 </div>
             </div>
@@ -32,13 +37,13 @@
                     <!---->
                     <div class="card-body row">
                         <form class="form-inline">
-                            <!--<label class="sr-only" [for]="dpp">DatePicker</label>-->
-                            <!--<div class="input-group col-6">-->
-                                <!--<input class="form-control" placeholder="yyyy-mm-dd" name="datePicker" [(ngModel)]="dateTransaction" ngbDatepicker #dpp="ngbDatepicker">-->
-                                <!--<button class="input-group-addon" (click)="dpp.toggle()" type="button"><i class='fa fa-calendar' aria-hidden="true"></i></button>-->
-                            <!--</div>-->
+                            <label class="sr-only" for="datePicker">DatePicker</label>
+                            <div class="input-group col-6">
+                                <input id="datePicker" class="form-control" placeholder="yyyy-mm-dd" name="datePicker" [(ngModel)]="dateTransaction" ngbDatepicker #dpp="ngbDatepicker">
+                                <button class="input-group-addon" (click)="dpp.toggle()" type="button"><i class='fa fa-calendar' aria-hidden="true"></i></button>
+                            </div>
 
-                            <label class="sr-only" for="montantTotal">DatePicker</label>
+                            <label class="sr-only" for="montantTotal">Montant</label>
                             <div class="input-group col-3">
                                 <input id="montantTotal" class="form-control" name="montantTotal" [(ngModel)]="debitCredit.montantTotal">
                                 <span class="input-group-addon">€</span>
@@ -54,31 +59,58 @@
                 </div>
             </ngbd-example-box>
 
+            <p></p>
+
             <ngbd-example-box component="tabset" demotitle="Ventilation">
                 <div class="card">
-                    <div class="card-header"><span class="h3">Ventilation</span></div>
+                    <div class="card-header">
+                        <span class="h3">Ventilation</span>
+                        <div class="pull-right">
+                            <button id="bt_ventilation_plus" type="button" class="btn btn-default btn-xs" (click)="addVentilation()">
+                                <i class='fa fa-plus' aria-hidden="true"></i>
+                            </button>
+                            <button id="bt_ventilation_clear" type="button" class="btn btn-default btn-xs" (click)="removeAllVentilation()">
+                                <i class='fa fa-trash' aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
                     <!---->
                     <div class="card-body">
-                        <ngb-tabset>
-                            <ngb-tab *ngFor="let ventilation of debitCredit.details" title="{{ventilation.id}}">
-                                <ng-template ngbTabContent>
-                                    <p>{{ventilation.categorieId}}</p>
-                                    <p>{{ventilation.categorieName}}</p>
-                                    <p>{{ventilation.montant}}</p>
-                                    <p>{{ventilation.virementInterne}}</p>
-                                    <p>{{ventilation.virementInterneCompteId}}</p>
-                                </ng-template>
-                            </ngb-tab>
-                        </ngb-tabset>
+                        <table id="ventilationTable" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>categorie</th>
+                                <th>montant</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let ventilation of debitCredit.details">
+                                    <td class="col-xs-5">
+                                        <p>categorie</p>
+                                    </td>
+                                    <td class="col-xs-6">
+                                        <div class="input-group">
+                                            <input class="form-control" name="montantVentilation" [(ngModel)]="ventilation.montant">
+                                            <span class="input-group-addon">€</span>
+                                        </div>
+                                    </td>
+                                    <td class="col-xs-1">
+                                        <button type="button" class="btn btn-default btn-xs buttonRemove" (click)="removeVentilation(ventilation)">
+                                            <i class='fa fa-minus' aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </ngbd-example-box>
-            <p>{{debitCredit | json}}</p>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-outline-light" (click)="modalD('Close click')">Close</button>
-        <button class="btn btn-outline-light" (click)="c('Update click')">Update</button>
+        <button type="button" class="btn btn-outline-light" (click)="clear()">Cancel</button>
+        <button type="submit" class="btn btn-outline-light" (click)="update()">Update</button>
     </div>
 </ng-template>
 

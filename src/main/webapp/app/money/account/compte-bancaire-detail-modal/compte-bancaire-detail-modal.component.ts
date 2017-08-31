@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ModalDismissReasons, NgbDateStruct, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbActiveModal, NgbDateStruct, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {DebitCredit, DetailMontant} from '../account.model';
 import {CompteBancaireService} from '../account.service';
 
@@ -24,32 +24,43 @@ export class CompteBancaireDetailModalComponent implements OnInit {
     public debitCredit: DebitCredit;
 
     public dateTransaction: NgbDateStruct;
+    private currentModal: NgbModalRef;
 
     @ViewChild('content') modalContent;
 
     @Output()
     onUpdate = new EventEmitter<DebitCredit>();
 
-    constructor(private modalService: NgbModal, private accountService: CompteBancaireService) {
+    constructor(private modalService: NgbModal,
+                private accountService: CompteBancaireService) {
     }
 
     ngOnInit() {
     }
 
-    open() {
+    open(): void {
         console.log('Opening modal for debitCredit : ' + this.debitCredit.id);
 
         // converting the date transaction
         this.dateTransaction = this.dateToNgbDateStruct(this.debitCredit.dateTransaction);
 
         // opening the modal page
-        this.modalService.open(this.modalContent).result.then((result) => {
+        this.currentModal = this.modalService.open(this.modalContent);
+        this.currentModal.result.then((result) => {
             console.log(`Closed with: ${result}`);
             this.debitCredit.dateTransaction = this.ngbDateStructToDate(this.dateTransaction);
             this.onUpdate.emit(this.debitCredit);
         }, (reason) => {
             console.log(`Dismissed ${this.getDismissReason(reason)}`);
         });
+    }
+
+    clear(): void {
+        this.currentModal.dismiss('cancel');
+    }
+
+    update(): void {
+        this.currentModal.close('update');
     }
 
     private getDismissReason(reason: any): string {
@@ -88,7 +99,7 @@ export class CompteBancaireDetailModalComponent implements OnInit {
 
     private dateToNgbDateStruct(myDate: Date): NgbDateStruct {
         const currentDate: Date = new Date(this.debitCredit.dateTransaction);
-        return { day: currentDate.getDate() - 1, month: currentDate.getMonth() + 1, year: currentDate.getFullYear() };
+        return {day: currentDate.getDate() - 1, month: currentDate.getMonth() + 1, year: currentDate.getFullYear()};
     }
 
     private ngbDateStructToDate(myDate: NgbDateStruct): Date {
@@ -99,7 +110,26 @@ export class CompteBancaireDetailModalComponent implements OnInit {
         return this.debitCredit.datePointage !== null;
     }
 
-    set datePointageCheck(input: boolean){
+    set datePointageCheck(input: boolean) {
         this.debitCredit.datePointage = (input) ? new Date() : null;
+    }
+
+    addVentilation(): void {
+        this.debitCredit.details.push({
+            id: null,
+            virementInterne: false,
+            categorieName: null,
+            montant: 0,
+            virementInterneCompteId: null,
+            categorieId: null
+        })
+    }
+
+    removeVentilation(ventilation: DetailMontant): void {
+        this.debitCredit.details.splice(this.debitCredit.details.indexOf(ventilation), 1);
+    }
+
+    removeAllVentilation(): void {
+        this.debitCredit.details = [];
     }
 }
