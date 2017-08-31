@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CompteBancaireService} from '../account.service';
 import {CompteBancaire} from '../models/CompteBancaire';
 import {Router} from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'jhi-accounts',
@@ -44,9 +45,5 @@ export class ComptebancaireListComponent implements OnInit {
         this.compteBancaireSrv.deleteAccount(compte.id).subscribe((response) => {
             this.accounts.splice(this.accounts.indexOf(compte), 1);
         })
-    }
-
-    onClickAccount(compte: CompteBancaire) {
-        this.router.navigate(['/accountDetails', {id : compte.id}]);
     }
 }

@@ -19,9 +19,10 @@ export class CompteBancaireService {
         if (this.userCompteBancaire.length !== 0) {
             return Observable.of(this.userCompteBancaire);
         }
-        return this.http.get(`${this.compteBancaireUrl}/`).map((res: Response) => {
+        return this.http.get(`${this.compteBancaireUrl}/`)
+            .map((res: Response) => {
             const jsonResponse = res.json();
-            this.userCompteBancaire = jsonResponse;
+            this.userCompteBancaire = res.json();
             return jsonResponse;
         });
     }

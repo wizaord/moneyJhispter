@@ -24,20 +24,21 @@ export class CompteBancaireDetailsComponent implements OnInit {
         this.pageDate = new Date(Date.UTC(tempDate.getFullYear(), tempDate.getMonth(), 1, 0, 0, 0));
 
         this.accountIds = [];
+
         // check if this page is called for a specific account or not
-        if (this.route.snapshot.paramMap.has('id')) {
+        if (this.route.snapshot.queryParamMap.has('id')) {
             // calling for a specific account
-            const id = this.route.snapshot.paramMap.get('id');
+            const id = this.route.snapshot.queryParamMap.get('id');
             this.accountIds.push(id);
         } else {
             // calling for a multiple account
-            const ids = this.route.snapshot.paramMap.get('ids');
+            const ids = this.route.snapshot.queryParamMap.get('ids');
             ids.split('##').forEach((accountId) => this.accountIds.push(accountId))
         }
 
         // check if the month has been specified
-        if (this.route.snapshot.paramMap.has('pageDate')) {
-            const inputDate = this.route.snapshot.paramMap.get('pageDate');
+        if (this.route.snapshot.queryParamMap.has('pageDate')) {
+            const inputDate = this.route.snapshot.queryParamMap.get('pageDate');
             const inputYear = inputDate.substring(0, inputDate.indexOf('-'));
             const inputMonth = inputDate.substr(inputDate.indexOf('-') + 1);
             this.pageDate.setFullYear(parseInt(inputYear, 10), parseInt(inputMonth, 10));
