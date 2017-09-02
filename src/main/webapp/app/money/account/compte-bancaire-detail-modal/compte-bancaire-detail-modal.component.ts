@@ -115,11 +115,17 @@ export class CompteBancaireDetailModalComponent implements OnInit {
     }
 
     addVentilation(): void {
+        let totalVentilation = 0;
+
+        this.debitCredit.details
+            .map((ventilation) => ventilation.montant)
+            .forEach((x) => totalVentilation += x);
+
         this.debitCredit.details.push({
             id: null,
             virementInterne: false,
             categorieName: null,
-            montant: 0,
+            montant: this.debitCredit.montantTotal - totalVentilation,
             virementInterneCompteId: null,
             categorieId: null
         })
