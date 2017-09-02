@@ -4,6 +4,7 @@ import {CompteBancaire} from './models/CompteBancaire';
 import {Http, Response} from '@angular/http';
 import {DebitCreditSearch} from './index';
 import {DebitCredit} from './account.model';
+import 'rxjs/add/observable/from';
 
 @Injectable()
 export class CompteBancaireService {
@@ -27,13 +28,11 @@ export class CompteBancaireService {
         });
     }
 
-    getAccountName(accountId: number): String {
-        // console.log('Looking for the number ' + accountId);
-        // console.log('In => ' + JSON.stringify(this.userCompteBancaire));
-        if (this.userCompteBancaire.length === 0) {
-            return '';
-        }
-        return this.userCompteBancaire.filter((account) => account.id === accountId)[0].libelle;
+    getAccountName(accountId: number): Observable<string> {
+        return this.findAll()
+            .flatMap((accounts) => Observable.from(accounts))
+            .filter((account) => account.id === accountId)
+            .map((account) => account.libelle);
     }
 
     closeAccount(accountId: number): Observable<Response> {

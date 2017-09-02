@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsula
 import {ModalDismissReasons, NgbActiveModal, NgbDateStruct, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {DebitCredit, DetailMontant} from '../account.model';
 import {CompteBancaireService} from '../account.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
     selector: '[jhi-compte-bancaire-td]',
@@ -87,7 +88,7 @@ export class CompteBancaireDetailModalComponent implements OnInit {
         return 'ventilation';
     }
 
-    get accountName(): String {
+    get accountName(): Observable<String> {
         return this.accountService.getAccountName(this.debitCredit.compteId);
     }
 
