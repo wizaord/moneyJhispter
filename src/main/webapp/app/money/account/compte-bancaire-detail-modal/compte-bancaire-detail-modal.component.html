@@ -37,11 +37,11 @@
                     <!---->
                     <div class="card-body row">
                         <form class="form-inline">
-                            <label class="sr-only" for="datePicker">DatePicker</label>
-                            <div class="input-group col-6">
-                                <input id="datePicker" class="form-control" placeholder="yyyy-mm-dd" name="datePicker" [(ngModel)]="dateTransaction" ngbDatepicker #dpp="ngbDatepicker">
-                                <button class="input-group-addon" (click)="dpp.toggle()" type="button"><i class='fa fa-calendar' aria-hidden="true"></i></button>
-                            </div>
+                            <!--<label class="sr-only" for="datePicker">DatePicker</label>-->
+                            <!--<div class="input-group col-6">-->
+                                <!--<input id="datePicker" class="form-control" placeholder="yyyy-mm-dd" name="datePicker" [(ngModel)]="dateTransaction" ngbDatepicker #dpp="ngbDatepicker">-->
+                                <!--<button class="input-group-addon" (click)="dpp.toggle()" type="button"><i class='fa fa-calendar' aria-hidden="true"></i></button>-->
+                            <!--</div>-->
 
                             <label class="sr-only" for="montantTotal">Montant</label>
                             <div class="input-group col-3">
@@ -85,13 +85,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let ventilation of debitCredit.details">
+                                <tr *ngFor="let ventilation of debitCredit.details; let i = index">
                                     <td class="col-xs-5">
                                         <p>categorie</p>
                                     </td>
                                     <td class="col-xs-6">
                                         <div class="input-group">
-                                            <input class="form-control" name="montantVentilation" [(ngModel)]="ventilation.montant">
+                                            <input class="form-control" name="montantVentilation{{i}}" [(ngModel)]="ventilation.montant">
                                             <span class="input-group-addon">€</span>
                                         </div>
                                     </td>
