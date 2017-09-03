@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {CompteBancaire} from './models/CompteBancaire';
+import {CompteBancaire} from '../account/models/CompteBancaire';
 import {Http, Response} from '@angular/http';
-import {DebitCreditSearch} from './index';
-import {DebitCredit} from './account.model';
+import {DebitCreditSearch} from '../account/index';
+import {DebitCredit} from '../account/account.model';
 import 'rxjs/add/observable/from';
 
 @Injectable()

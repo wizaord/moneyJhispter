@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ModalDismissReasons, NgbActiveModal, NgbDateStruct, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {DebitCredit, DetailMontant} from '../account.model';
-import {CompteBancaireService} from '../account.service';
+import {CompteBancaireService} from '../../shared/account.service';
 import {Observable} from 'rxjs/Observable';
 import {CategorieService} from '../../shared/categorie.service';
 

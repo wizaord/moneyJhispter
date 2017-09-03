@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CompteBancaireService} from '../account.service';
+import {CompteBancaireService} from '../../shared/account.service';
 import {DebitCredit, DetailMontant} from '../account.model';
 
 @Component({

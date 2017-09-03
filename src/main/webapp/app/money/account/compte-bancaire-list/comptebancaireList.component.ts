@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CompteBancaireService} from '../account.service';
+import {CompteBancaireService} from '../../shared/account.service';
 import {CompteBancaire} from '../models/CompteBancaire';
 import {Router} from '@angular/router';
 import { RouterLink } from '@angular/router';
