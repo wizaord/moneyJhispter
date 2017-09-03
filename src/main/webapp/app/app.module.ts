@@ -26,6 +26,7 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import {CategorieService} from './money/shared/categorie.service';
 
 @NgModule({
     imports: [
@@ -37,7 +38,7 @@ import {
         MoneyJhipsterAdminModule,
         MoneyJhipsterAccountModule,
         MoneyJhipsterEntityModule,
-        MoneyJhipsterMoneyModule
+        MoneyJhipsterMoneyModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -46,13 +47,14 @@ import {
         ErrorComponent,
         PageRibbonComponent,
         ActiveMenuDirective,
-        FooterComponent,
+        FooterComponent
     ],
     providers: [
         ProfileService,
         customHttpProvider(),
         PaginationConfig,
-        UserRouteAccessService
+        UserRouteAccessService,
+        CategorieService
     ],
     bootstrap: [ JhiMainComponent ]
 })

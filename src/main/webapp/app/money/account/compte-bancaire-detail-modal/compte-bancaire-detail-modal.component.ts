@@ -3,6 +3,7 @@ import {ModalDismissReasons, NgbActiveModal, NgbDateStruct, NgbModal, NgbModalRe
 import {DebitCredit, DetailMontant} from '../account.model';
 import {CompteBancaireService} from '../account.service';
 import {Observable} from 'rxjs/Observable';
+import {CategorieService} from '../../shared/categorie.service';
 
 @Component({
     selector: '[jhi-compte-bancaire-td]',
@@ -33,7 +34,8 @@ export class CompteBancaireDetailModalComponent implements OnInit {
     onUpdate = new EventEmitter<DebitCredit>();
 
     constructor(private modalService: NgbModal,
-                private accountService: CompteBancaireService) {
+                private accountService: CompteBancaireService,
+                private categorieService: CategorieService) {
     }
 
     ngOnInit() {
@@ -129,7 +131,7 @@ export class CompteBancaireDetailModalComponent implements OnInit {
             montant: this.debitCredit.montantTotal - totalVentilation,
             virementInterneCompteId: null,
             categorieId: null
-        })
+        });
     }
 
     removeVentilation(ventilation: DetailMontant): void {
